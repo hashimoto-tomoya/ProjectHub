@@ -1,5 +1,14 @@
-# cloude
+# Claude
 settings.local.json
+
+# Python
+.venv/
+
+# MkDocs
+site/
+
+# Logs
+.logs/
 
 # Other
 .work
