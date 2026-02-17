@@ -15,6 +15,38 @@ mob-docs-init スキルがプロジェクト初期化時に CLAUDE.md に追記�
 - ドキュメント作成タスクは順番通りに消化するようにしてください。前タスクを飛ばすのはNGです。
 - docs/index.md 内の該当タスクが完了した場合、ステータスを更新してください（未着手→対応中→完了）。
 - コンテンツをブラウザで確認する際にPlaywrightで取得したスクリーンショットなどの一時ファイルは.logsフォルダに格納してください。
+
+## MkDocsセットアップ
+### 1. Python仮想環境の作成
+```bash
+python -m venv .venv
+```
+
+### 2. 仮想環境の有効化
+**Windows (PowerShell):**
+```powershell
+.venv\Scripts\Activate.ps1
+```
+
+### 3. 依存パッケージのインストール
+```bash
+pip install mkdocs-material
+```
+
+## 使い方
+### ローカルプレビュー（開発サーバー）
+```bash
+mkdocs serve --livereload
+```
+
+ブラウザで http://127.0.0.1:8000 にアクセスするとドキュメントが表示されます。
+ファイルを編集すると自動的にリロードされます。
+
+### 静的サイトのビルド
+```bash
+mkdocs build
+```
+`site/` ディレクトリにHTML一式が生成されます。
 ```
 
 ## 追記時の注意
