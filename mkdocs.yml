@@ -1,0 +1,73 @@
+site_name: Mobius Project Hub 設計ドキュメント
+site_description: 社内プロジェクト管理ツール「Mobius Project Hub」の設計ドキュメント
+site_url: ""
+
+theme:
+  name: material
+  language: ja
+  palette:
+    - scheme: default
+      primary: indigo
+      accent: pink
+      toggle:
+        icon: material/brightness-7
+        name: ダークモードに切り替え
+    - scheme: slate
+      primary: indigo
+      accent: pink
+      toggle:
+        icon: material/brightness-4
+        name: ライトモードに切り替え
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.expand
+    - navigation.top
+    - toc.integrate
+    - search.suggest
+    - content.tabs.link
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - tables
+  - attr_list
+  - md_in_html
+  - toc:
+      permalink: true
+
+plugins:
+  - search
+
+nav:
+  - ホーム: index.md
+  - 要件定義:
+      - 概要: 01-requirements/index.md
+      - プロジェクト概要: 01-requirements/project-overview.md
+      - 機能要件: 01-requirements/functional-requirements.md
+      - 非機能要件: 01-requirements/non-functional-requirements.md
+  - 方式設計:
+      - 概要: 02-technical-design/index.md
+      - アーキテクチャ方式: 02-technical-design/architecture.md
+      - インフラ・運用方式: 02-technical-design/infrastructure.md
+  - 基本設計:
+      - 概要: 03-basic-design/index.md
+      - 画面設計: 03-basic-design/screen-design.md
+      - データモデル: 03-basic-design/data-model.md
+      - API設計: 03-basic-design/api-design.md
+  - 詳細設計:
+      - 概要: 04-detailed-design/index.md
+      - コンポーネント設計: 04-detailed-design/component-design.md
+      - テスト設計: 04-detailed-design/testing.md
