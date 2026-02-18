@@ -25,15 +25,15 @@ Docker が動作する環境（オンプレミスサーバー・クラウド VPS
 graph TB
     subgraph Host["Docker ホスト"]
         subgraph Compose["Docker Compose ネットワーク (app-network)"]
-            Nginx["nginx コンテナ\n:443 (HTTPS)\n:80 (HTTP→HTTPS リダイレクト)"]
-            App["app コンテナ\n:3000 (HTTP, 内部のみ)"]
-            DB[("db コンテナ\n:5432 (TCP, 内部のみ)")]
+            Nginx["nginx コンテナ<br/>:443 (HTTPS)<br/>:80 (HTTP→HTTPS リダイレクト)"]
+            App["app コンテナ<br/>:3000 (HTTP, 内部のみ)"]
+            DB[("db コンテナ<br/>:5432 (TCP, 内部のみ)")]
         end
-        Vol1[("pgdata\nボリューム")]
-        Vol2[("nginx-certs\nボリューム\n(TLS証明書)")]
+        Vol1[("pgdata<br/>ボリューム")]
+        Vol2[("nginx-certs<br/>ボリューム<br/>(TLS証明書)")]
     end
 
-    Internet["クライアント (ブラウザ)\n社内ネットワーク"] -->|HTTPS :443| Nginx
+    Internet["クライアント (ブラウザ)<br/>社内ネットワーク"] -->|HTTPS :443| Nginx
     Internet -->|HTTP :80| Nginx
     Nginx -->|HTTP :3000| App
     App -->|TCP :5432| DB
@@ -199,15 +199,15 @@ GitHub Actions を使用し、コードの品質保証を自動化する。
 
 ```mermaid
 graph LR
-    PR["Pull Request\n作成・更新"] --> CI["CI ワークフロー\n(ci.yml)"]
-    CI --> Lint["ESLint\n+ Prettier チェック"]
-    CI --> TypeCheck["TypeScript\n型チェック"]
-    CI --> Test["Vitest\nユニットテスト"]
-    Lint & TypeCheck & Test --> Result{"全チェック\nパス?"}
+    PR["Pull Request<br/>作成・更新"] --> CI["CI ワークフロー<br/>(ci.yml)"]
+    CI --> Lint["ESLint<br/>+ Prettier チェック"]
+    CI --> TypeCheck["TypeScript<br/>型チェック"]
+    CI --> Test["Vitest<br/>ユニットテスト"]
+    Lint & TypeCheck & Test --> Result{"全チェック<br/>パス?"}
     Result -->|Yes| Merge["PR マージ可"]
     Result -->|No| Fail["マージブロック"]
 
-    Merge --> Deploy["デプロイ\n(手動 or CD ワークフロー)"]
+    Merge --> Deploy["デプロイ<br/>(手動 or CD ワークフロー)"]
 ```
 
 ### CI ワークフロー（PR 時）

@@ -10,18 +10,18 @@
 graph TB
     subgraph Docker["Docker Compose 環境"]
         subgraph App["app コンテナ (Next.js)"]
-            FE["プレゼンテーション層\nReact Components\nshadcn/ui / Tailwind CSS\nTanStack Query"]
-            API["APIルート層\nNext.js API Routes\nNextAuth.js セッション検証"]
-            SVC["サービス層\nビジネスロジック\nバリデーション / 集計処理"]
-            DA["データアクセス層\nPrisma Client"]
+            FE["プレゼンテーション層<br/>React Components<br/>shadcn/ui / Tailwind CSS<br/>TanStack Query"]
+            API["APIルート層<br/>Next.js API Routes<br/>NextAuth.js セッション検証"]
+            SVC["サービス層<br/>ビジネスロジック<br/>バリデーション / 集計処理"]
+            DA["データアクセス層<br/>Prisma Client"]
         end
         subgraph DB["db コンテナ"]
             PG[("PostgreSQL 16")]
         end
-        Nginx["nginx コンテナ\n(リバースプロキシ)\nHTTPS / IP制限"]
+        Nginx["nginx コンテナ<br/>(リバースプロキシ)<br/>HTTPS / IP制限"]
     end
 
-    User["利用者\n(ブラウザ)"] -->|HTTPS| Nginx
+    User["利用者<br/>(ブラウザ)"] -->|HTTPS| Nginx
     Nginx -->|HTTP| App
     FE -->|HTTP / JSON| API
     API --> SVC
@@ -115,13 +115,13 @@ graph TB
 ```mermaid
 graph TB
     subgraph Users["利用者"]
-        Admin["管理者\nユーザー管理・全機能"]
-        PMO["PMO\nレポート・分析閲覧"]
-        PM["プロジェクトマネージャー\nWBS・工数・レポート管理"]
-        Dev["開発者\n日報入力・タスク管理"]
+        Admin["管理者<br/>ユーザー管理・全機能"]
+        PMO["PMO<br/>レポート・分析閲覧"]
+        PM["プロジェクトマネージャー<br/>WBS・工数・レポート管理"]
+        Dev["開発者<br/>日報入力・タスク管理"]
     end
 
-    System["ProjectHub\n(社内プロジェクト管理システム)\nNext.js + PostgreSQL on Docker"]
+    System["ProjectHub<br/>(社内プロジェクト管理システム)<br/>Next.js + PostgreSQL on Docker"]
 
     Admin -->|HTTPS / 社内NW| System
     PMO -->|HTTPS / 社内NW| System
