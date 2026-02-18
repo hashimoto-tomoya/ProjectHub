@@ -18,4 +18,4 @@
 |---|--------|---------|-----------|
 | 6 | 画面設計 | screen-design.md | 完了 |
 | 7 | データモデル | data-model.md | 完了 |
-| 8 | API設計 | api-design.md | 未着手 |
+| 8 | API設計 | api-design.md | 完了 |
