@@ -277,6 +277,38 @@ graph LR
 | ユニットテスト | `npm run test`（Vitest） |
 | セキュリティ監査 | `npm audit --audit-level=critical` |
 
+### Claude Code Review ワークフロー（手動トリガー）
+
+PR のコメント欄で `@claude` とメンションすることで、Claude Code による AI コードレビューを手動でトリガーできる。
+
+**ワークフローファイル:** `.github/workflows/claude-review.yml`
+
+**トリガー条件:**
+
+| イベント | 条件 |
+|---------|------|
+| `issue_comment` | PR のコメント欄に `@claude` を含むコメントが投稿された時 |
+| `pull_request_review_comment` | PR の diff 上のコメントに `@claude` を含む時 |
+
+**使い方:**
+
+PR のコメント欄に以下のように投稿する。任意の指示文を添えて呼び出せる。
+
+```
+@claude このPRをレビューしてください。
+```
+
+**必要な GitHub Secrets:**
+
+| シークレット名 | 内容 |
+|--------------|------|
+| `CLAUDE_CODE_OAUTH_TOKEN` | Claude Code の OAuth トークン |
+
+!!! note "GITHUB_TOKEN について"
+    `GITHUB_TOKEN` は GitHub Actions が自動で提供する。別途登録は不要。
+
+---
+
 ### デプロイ方式
 
 初期フェーズは手動デプロイとする。
