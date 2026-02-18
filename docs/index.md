@@ -67,8 +67,8 @@ graph LR
 
 | # | 成果物 | 説明 | ステータス |
 |---|--------|------|-----------|
-| 4 | アーキテクチャ方式 | architecture.md | 未着手 |
-| 5 | インフラ・運用方式 | infrastructure.md | 未着手 |
+| 4 | アーキテクチャ方式 | architecture.md | 完了 |
+| 5 | インフラ・運用方式 | infrastructure.md | 完了 |
 
 ### フェーズ3: 基本設計
 
