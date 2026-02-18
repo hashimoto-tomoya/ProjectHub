@@ -116,6 +116,59 @@ volumes:
 
 ---
 
+## 開発環境
+
+### 前提条件
+
+開発者 PC は **Windows** を対象とする。以下のツールを事前にインストールする。
+
+| ツール | バージョン | 用途 |
+|-------|-----------|------|
+| Docker Desktop for Windows | 4.x 以上 | コンテナ実行環境（WSL2 バックエンドを使用） |
+| Node.js (LTS) | 20.x | ローカルでの npm スクリプト実行（lint / test 等） |
+| Git for Windows | latest | ソースコード管理。Git Bash 経由でシェルコマンドを実行 |
+| VSCode | latest | 推奨エディタ |
+
+!!! warning "WSL2 の有効化"
+    Docker Desktop for Windows は WSL2 バックエンドを使用する。
+    インストール前に Windows の「Linux 用 Windows サブシステム」と「仮想マシン プラットフォーム」機能を有効化しておくこと。
+
+### 行末文字の統一（LF）
+
+Windows はデフォルトで CRLF を使用するが、Linux コンテナ内のシェルスクリプト・設定ファイルは LF が必須。
+`.gitattributes` を設定し、リポジトリ内のテキストファイルの行末文字を LF に統一する。
+
+```text title=".gitattributes"
+* text=auto eol=lf
+*.ts text eol=lf
+*.tsx text eol=lf
+*.json text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.sh text eol=lf
+*.md text eol=lf
+```
+
+### シェルコマンドの実行環境
+
+バックアップ・リカバリ手順などの bash スクリプトは **Git Bash または WSL2** から実行する。
+PowerShell / コマンドプロンプトからは動作しない。
+
+### パフォーマンスに関する推奨事項
+
+Docker Desktop for Windows のファイルシステムパフォーマンスを最大化するため、プロジェクトのクローン先は **WSL2 のファイルシステム上** を推奨する。
+
+| クローン先 | パフォーマンス | 推奨 |
+|-----------|--------------|------|
+| `C:\Users\...`（Windows FS） | 低（バインドマウント経由の I/O が遅い） | 非推奨 |
+| `\\wsl$\Ubuntu\home\...`（WSL2 FS） | 高 | 推奨 |
+
+!!! tip "WSL2 上での VSCode 利用"
+    プロジェクトを WSL2 ファイルシステムに置いた場合、VSCode の「WSL」拡張機能を使用することで
+    Windows から透過的に WSL2 上のファイルを編集・操作できる。
+
+---
+
 ## セキュリティ方式
 
 ### 認証方式
