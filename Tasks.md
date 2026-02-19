@@ -60,14 +60,14 @@ T01（初期セットアップ）
 
 > **概要**: コンテナ構成・nginx設定・CI/CDパイプライン構築 / **依存**: T01 / **並列**: T03 と同時進行可能
 
-- [ ] T02-1: `Dockerfile` 作成（Node.js 20-alpine, Next.js ビルド）
-- [ ] T02-2: `docker-compose.yml` 作成（nginx, app, db コンテナ・ヘルスチェック）
-- [ ] T02-3: `docker-compose.test.yml` 作成（テスト用 PostgreSQL コンテナ分離）
-- [ ] T02-4: nginx 設定（`nginx/nginx.conf`）: HTTPS終端・HTTP→HTTPSリダイレクト・IP制限・リバースプロキシ
-- [ ] T02-5: TLS 自己署名証明書生成手順整備・`nginx-certs` ボリューム設定
-- [ ] T02-6: GitHub Actions CI ワークフロー作成（`.github/workflows/ci.yml`）: lint, type-check, unit test, npm audit
-- [ ] T02-7: Claude Code Review ワークフロー作成（`.github/workflows/claude-review.yml`）
-- [ ] T02-8: `/api/health` エンドポイント実装（`{ status: "ok", timestamp }` を返す）
+- [x] T02-1: `Dockerfile` 作成（Node.js 20-alpine, Next.js ビルド）
+- [x] T02-2: `docker-compose.yml` 作成（nginx, app, db コンテナ・ヘルスチェック）
+- [x] T02-3: `docker-compose.test.yml` 作成（テスト用 PostgreSQL コンテナ分離）
+- [x] T02-4: nginx 設定（`nginx/nginx.conf`）: HTTPS終端・HTTP→HTTPSリダイレクト・IP制限・リバースプロキシ
+- [x] T02-5: TLS 自己署名証明書生成手順整備・`nginx-certs` ボリューム設定
+- [x] T02-6: GitHub Actions CI ワークフロー作成（`.github/workflows/ci.yml`）: lint, type-check, unit test, npm audit
+- [x] T02-7: Claude Code Review ワークフロー作成（`.github/workflows/claude-review.yml`）
+- [x] T02-8: `/api/health` エンドポイント実装（`{ status: "ok", timestamp }` を返す）
 
 ---
 
