@@ -1,9 +1,5 @@
 # ProjectHub 実装タスク一覧
 
-## 概要
-
-設計書（要件定義〜詳細設計）に基づき、実装に必要なタスクをメインタスク・サブタスクの2階層で整理する。
-
 ## 依存関係マップ
 
 ```
@@ -22,342 +18,253 @@ T01（初期セットアップ）
                                                    └── T14（テスト）
 ```
 
-### 並列作業が可能なタスク
+### 並列作業が可能なグループ
 
 | グループ | タスク | 前提条件 |
 |---------|--------|---------|
-| G1 | T02, T03 | T01 完了後に並列実行可能 |
-| G2 | T04, T05 | T01, T03 完了後に並列実行可能（一部） |
-| G3 | T07, T13 | T06 完了後に並列実行可能 |
-| G4 | T08, T10, T11 | T07 完了後に並列実行可能 |
+| G1 | T02, T03 | T01 完了後 |
+| G2 | T04, T05 | T01, T03 完了後 |
+| G3 | T07, T13 | T06 完了後 |
+| G4 | T08, T10, T11 | T07 完了後 |
 | G5 | T09 | T08 完了後 |
 | G6 | T12 | T09, T10, T11 完了後 |
-| G7 | T14 | 各機能実装後に順次並列実行可能 |
+| G7 | T14 | 各機能実装後に順次 |
 
 ---
 
 ## T01: プロジェクト初期セットアップ
 
-**概要**: Next.js プロジェクト作成・開発環境構築・コーディング規約設定
-**優先度**: P0（全タスクの起点）
-**依存**: なし
+> **概要**: Next.js プロジェクト作成・開発環境構築・コーディング規約設定 / **依存**: なし
 
-| サブタスク | 内容 | 依存 |
-|-----------|------|------|
-| T01-1 | Next.js 14 (App Router) + TypeScript プロジェクト作成 | なし |
-| T01-2 | 依存パッケージインストール（shadcn/ui, Tailwind CSS, TanStack Query v5, NextAuth.js v5, Prisma v5, Zod, Recharts） | T01-1 |
-| T01-3 | `.gitattributes`（LF統一）, `.env.example`, `.gitignore` 設定 | T01-1 |
-| T01-4 | ESLint + Prettier 設定（Next.js 標準ルール） | T01-1 |
-| T01-5 | Vitest + Testing Library + MSW + Playwright テスト環境設定 | T01-1 |
-| T01-6 | `package.json` npm スクリプト定義（`test`, `test:int`, `test:e2e`, `test:cov`, `lint`, `type-check`） | T01-4, T01-5 |
+- [ ] T01-1: Next.js 14 (App Router) + TypeScript プロジェクト作成
+- [ ] T01-2: 依存パッケージインストール（shadcn/ui, Tailwind CSS, TanStack Query v5, NextAuth.js v5, Prisma v5, Zod, Recharts）
+- [ ] T01-3: `.gitattributes`（LF統一）, `.env.example`, `.gitignore` 設定
+- [ ] T01-4: ESLint + Prettier 設定（Next.js 標準ルール）
+- [ ] T01-5: Vitest + Testing Library + MSW + Playwright テスト環境設定
+- [ ] T01-6: `package.json` npm スクリプト定義（`test`, `test:int`, `test:e2e`, `test:cov`, `lint`, `type-check`）
 
 ---
 
 ## T02: Docker環境構築
 
-**概要**: コンテナ構成・nginx設定・CI/CDパイプライン構築
-**優先度**: P0
-**依存**: T01
-**並列**: T03 と同時進行可能
+> **概要**: コンテナ構成・nginx設定・CI/CDパイプライン構築 / **依存**: T01 / **並列**: T03 と同時進行可能
 
-| サブタスク | 内容 | 依存 |
-|-----------|------|------|
-| T02-1 | `Dockerfile` 作成（Node.js 20-alpine, Next.js ビルド） | T01-1 |
-| T02-2 | `docker-compose.yml` 作成（nginx, app, db コンテナ・ヘルスチェック） | T02-1 |
-| T02-3 | `docker-compose.test.yml` 作成（テスト用 PostgreSQL コンテナ分離） | T02-2 |
-| T02-4 | nginx 設定（`nginx/nginx.conf`）: HTTPS終端・HTTP→HTTPSリダイレクト・IP制限・リバースプロキシ | T02-2 |
-| T02-5 | TLS 自己署名証明書生成手順整備・`nginx-certs` ボリューム設定 | T02-4 |
-| T02-6 | GitHub Actions CI ワークフロー作成（`.github/workflows/ci.yml`）: lint, type-check, unit test, npm audit | T01-6 |
-| T02-7 | Claude Code Review ワークフロー作成（`.github/workflows/claude-review.yml`） | T02-6 |
-| T02-8 | `/api/health` エンドポイント実装（`{ status: "ok", timestamp }` を返す） | T01-1 |
+- [ ] T02-1: `Dockerfile` 作成（Node.js 20-alpine, Next.js ビルド）
+- [ ] T02-2: `docker-compose.yml` 作成（nginx, app, db コンテナ・ヘルスチェック）
+- [ ] T02-3: `docker-compose.test.yml` 作成（テスト用 PostgreSQL コンテナ分離）
+- [ ] T02-4: nginx 設定（`nginx/nginx.conf`）: HTTPS終端・HTTP→HTTPSリダイレクト・IP制限・リバースプロキシ
+- [ ] T02-5: TLS 自己署名証明書生成手順整備・`nginx-certs` ボリューム設定
+- [ ] T02-6: GitHub Actions CI ワークフロー作成（`.github/workflows/ci.yml`）: lint, type-check, unit test, npm audit
+- [ ] T02-7: Claude Code Review ワークフロー作成（`.github/workflows/claude-review.yml`）
+- [ ] T02-8: `/api/health` エンドポイント実装（`{ status: "ok", timestamp }` を返す）
 
 ---
 
 ## T03: データベース設計・Prisma スキーマ
 
-**概要**: Prisma スキーマ定義・マイグレーション・シードデータ
-**優先度**: P0
-**依存**: T01
-**並列**: T02 と同時進行可能
+> **概要**: Prisma スキーマ定義・マイグレーション・シードデータ / **依存**: T01 / **並列**: T02 と同時進行可能
 
-| サブタスク | 内容 | 依存 |
-|-----------|------|------|
-| T03-1 | `prisma/schema.prisma` 定義（全10テーブル: users, projects, project_members, tasks, daily_reports, daily_report_entries, review_sessions, review_categories, review_items, bugs） | T01-2 |
-| T03-2 | `project_members` テーブルに `is_favorite BOOLEAN DEFAULT false` カラム追加（API設計書の追記事項対応） | T03-1 |
-| T03-3 | `audit_logs` テーブル定義追加（操作ログ: id, timestamp, user_id, action, resource_type, resource_id, detail） | T03-1 |
-| T03-4 | インデックス定義（各テーブルの外部キー・検索用・集計用インデックス） | T03-1 |
-| T03-5 | 初回マイグレーション実行（`prisma migrate dev`） | T03-1〜4 |
-| T03-6 | シードデータ作成（`prisma/seed.ts`）: テストユーザー・テストプロジェクト・指摘区分マスタ | T03-5 |
-| T03-7 | テスト用フィクスチャデータ作成（`tests/fixtures/`）: 各テストケース用データ | T03-6 |
+- [ ] T03-1: `prisma/schema.prisma` 定義（全10テーブル: users, projects, project_members, tasks, daily_reports, daily_report_entries, review_sessions, review_categories, review_items, bugs）
+- [ ] T03-2: `project_members` テーブルに `is_favorite BOOLEAN DEFAULT false` カラム追加（API設計書の追記事項対応）
+- [ ] T03-3: `audit_logs` テーブル定義追加（操作ログ: id, timestamp, user_id, action, resource_type, resource_id, detail）
+- [ ] T03-4: インデックス定義（各テーブルの外部キー・検索用・集計用インデックス）
+- [ ] T03-5: 初回マイグレーション実行（`prisma migrate dev`）
+- [ ] T03-6: シードデータ作成（`prisma/seed.ts`）: テストユーザー・テストプロジェクト・指摘区分マスタ
+- [ ] T03-7: テスト用フィクスチャデータ作成（`tests/fixtures/`）: 各テストケース用データ
 
 ---
 
 ## T04: 共通基盤実装
 
-**概要**: 認証基盤・Prisma Client・型定義・ユーティリティ・ミドルウェア
-**優先度**: P0
-**依存**: T01, T03
-**並列**: T05 と一部並列可能
+> **概要**: 認証基盤・Prisma Client・型定義・ユーティリティ・ミドルウェア / **依存**: T01, T03 / **並列**: T05 と一部並列可能
 
-| サブタスク | 内容 | 依存 |
-|-----------|------|------|
-| T04-1 | `lib/prisma/client.ts` 実装（Prisma Client シングルトン・開発環境 hot reload 対策） | T03-5 |
-| T04-2 | `lib/types/domain.ts` 定義（Role, ProjectStatus, TaskStatus, ReviewItemStatus, BugStatus, Severity, DashboardData, EvmDataPoint 等） | T01-1 |
-| T04-3 | `lib/types/api.ts` 定義（各API リクエスト/レスポンス型） | T04-2 |
-| T04-4 | `lib/utils/password.ts` 実装（bcrypt ハッシュ化・検証, コストファクター12） | T01-2 |
-| T04-5 | `lib/utils/validation.ts` 実装（Zod スキーマ共通定義: パスワードポリシー・日付・各エンティティ） | T01-2 |
-| T04-6 | `lib/utils/error.ts` 実装（カスタムエラークラス・`handleApiError` 共通エラーハンドラ） | T04-2 |
-| T04-7 | NextAuth.js 設定（`app/api/auth/[...nextauth]/route.ts`）: Credentials Provider, セッション管理, `mustChangePassword` フラグ | T04-1, T04-4 |
-| T04-8 | `lib/auth/session.ts` 実装（`requireAuth`, `requireRole`, `requireProjectMember` ヘルパー） | T04-7 |
-| T04-9 | `app/middleware.ts` 実装（ルートガード: 未認証リダイレクト・管理者チェック・パスワード変更強制） | T04-7, T04-8 |
+- [ ] T04-1: `lib/prisma/client.ts` 実装（Prisma Client シングルトン・開発環境 hot reload 対策）
+- [ ] T04-2: `lib/types/domain.ts` 定義（Role, ProjectStatus, TaskStatus, ReviewItemStatus, BugStatus, Severity, DashboardData, EvmDataPoint 等）
+- [ ] T04-3: `lib/types/api.ts` 定義（各 API リクエスト/レスポンス型）
+- [ ] T04-4: `lib/utils/password.ts` 実装（bcrypt ハッシュ化・検証, コストファクター12）
+- [ ] T04-5: `lib/utils/validation.ts` 実装（Zod スキーマ共通定義: パスワードポリシー・日付・各エンティティ）
+- [ ] T04-6: `lib/utils/error.ts` 実装（カスタムエラークラス・`handleApiError` 共通エラーハンドラ）
+- [ ] T04-7: NextAuth.js 設定（`app/api/auth/[...nextauth]/route.ts`）: Credentials Provider, セッション管理, `mustChangePassword` フラグ
+- [ ] T04-8: `lib/auth/session.ts` 実装（`requireAuth`, `requireRole`, `requireProjectMember` ヘルパー）
+- [ ] T04-9: `app/middleware.ts` 実装（ルートガード: 未認証リダイレクト・管理者チェック・パスワード変更強制）
 
 ---
 
 ## T05: 共通UIコンポーネント実装
 
-**概要**: レイアウト・汎用UIコンポーネント実装
-**優先度**: P0
-**依存**: T01-2（shadcn/ui インストール済み）
-**並列**: T04 と並列実装可能
+> **概要**: レイアウト・汎用UIコンポーネント実装 / **依存**: T01-2（shadcn/ui インストール済み）/ **並列**: T04 と並列実装可能
 
-| サブタスク | 内容 | 依存 |
-|-----------|------|------|
-| T05-1 | `app/(auth)/layout.tsx` (AuthLayout): ログイン画面用センタリングレイアウト | T01-1 |
-| T05-2 | `app/(main)/layout.tsx` (AppLayout): 共通レイアウト（ヘッダー+サイドバー+メインコンテンツ） | T01-1 |
-| T05-3 | `app/admin/layout.tsx` (AdminGuardLayout): 管理者ロール制限レイアウト | T05-2 |
-| T05-4 | `components/features/app-sidebar.tsx` (AppSidebar): サイドバーナビゲーション（ロール別表示制御） | T05-2 |
-| T05-5 | `components/features/global-project-selector.tsx` (GlobalProjectSelector): プロジェクト切り替えドロップダウン | T05-2 |
-| T05-6 | `components/features/user-menu.tsx` (UserMenu): ユーザーメニュー（パスワード変更・ログアウト） | T05-2 |
-| T05-7 | `components/ui/status-badge.tsx` (StatusBadge): ステータスカラーバッジ（タスク・指摘・障害） | T01-2 |
-| T05-8 | `components/ui/severity-badge.tsx` (SeverityBadge): 重要度カラーバッジ | T01-2 |
-| T05-9 | `components/ui/slide-over.tsx` (SlideOver): 右寄せドロワー汎用コンポーネント（shadcn/ui Sheet 利用） | T01-2 |
-| T05-10 | `components/ui/confirm-dialog.tsx` (ConfirmDialog): 確認ダイアログ | T01-2 |
-| T05-11 | `components/ui/data-table.tsx` (DataTable): 汎用データテーブル（ソート・ページネーション） | T01-2 |
-| T05-12 | `components/ui/date-range-picker.tsx` (DateRangePicker): 期間選択ピッカー | T01-2 |
-| T05-13 | `components/ui/loading-spinner.tsx` (LoadingSpinner): ローディングスピナー | T01-2 |
+- [ ] T05-1: `app/(auth)/layout.tsx` (AuthLayout): ログイン画面用センタリングレイアウト
+- [ ] T05-2: `app/(main)/layout.tsx` (AppLayout): 共通レイアウト（ヘッダー+サイドバー+メインコンテンツ）
+- [ ] T05-3: `app/admin/layout.tsx` (AdminGuardLayout): 管理者ロール制限レイアウト
+- [ ] T05-4: `components/features/app-sidebar.tsx` (AppSidebar): サイドバーナビゲーション（ロール別表示制御）
+- [ ] T05-5: `components/features/global-project-selector.tsx` (GlobalProjectSelector): プロジェクト切り替えドロップダウン
+- [ ] T05-6: `components/features/user-menu.tsx` (UserMenu): ユーザーメニュー（パスワード変更・ログアウト）
+- [ ] T05-7: `components/ui/status-badge.tsx` (StatusBadge): ステータスカラーバッジ（タスク・指摘・障害）
+- [ ] T05-8: `components/ui/severity-badge.tsx` (SeverityBadge): 重要度カラーバッジ
+- [ ] T05-9: `components/ui/slide-over.tsx` (SlideOver): 右寄せドロワー汎用コンポーネント（shadcn/ui Sheet 利用）
+- [ ] T05-10: `components/ui/confirm-dialog.tsx` (ConfirmDialog): 確認ダイアログ
+- [ ] T05-11: `components/ui/data-table.tsx` (DataTable): 汎用データテーブル（ソート・ページネーション）
+- [ ] T05-12: `components/ui/date-range-picker.tsx` (DateRangePicker): 期間選択ピッカー
+- [ ] T05-13: `components/ui/loading-spinner.tsx` (LoadingSpinner): ローディングスピナー
 
 ---
 
 ## T06: 認証機能実装
 
-**概要**: ログイン画面・パスワード管理・AuthService
-**優先度**: P0
-**依存**: T04, T05
+> **概要**: ログイン画面・パスワード管理・AuthService / **依存**: T04, T05
 
-| サブタスク | 内容 | 依存 |
-|-----------|------|------|
-| T06-1 | AuthService 実装（`lib/services/auth.service.ts`）: パスワード変更・初回ログイン検証・パスワード履歴3世代管理 | T04-4, T04-5 |
-| T06-2 | UserRepository 実装（`lib/repositories/user.repository.ts`）: findByEmail, findById, create, update（論理削除対応） | T04-1 |
-| T06-3 | ログイン画面（`app/(auth)/login/page.tsx`）: メールアドレス・パスワード入力・エラー表示 | T04-7, T05-1 |
-| T06-4 | パスワード変更画面（`app/(main)/users/me/change-password/page.tsx`）: 現パスワード確認・新パスワード入力 | T05-2 |
-| T06-5 | パスワード変更 API 実装（`PUT /api/users/me/password`）: バリデーション・現パスワード確認・ハッシュ更新 | T04-8, T06-1, T06-2 |
+- [ ] T06-1: AuthService 実装（`lib/services/auth.service.ts`）: パスワード変更・初回ログイン検証・パスワード履歴3世代管理
+- [ ] T06-2: UserRepository 実装（`lib/repositories/user.repository.ts`）: findByEmail, findById, create, update（論理削除対応）
+- [ ] T06-3: ログイン画面（`app/(auth)/login/page.tsx`）: メールアドレス・パスワード入力・エラー表示
+- [ ] T06-4: パスワード変更画面（`app/(main)/users/me/change-password/page.tsx`）: 現パスワード確認・新パスワード入力
+- [ ] T06-5: パスワード変更 API 実装（`PUT /api/users/me/password`）: バリデーション・現パスワード確認・ハッシュ更新
 
 ---
 
 ## T07: プロジェクト管理機能実装
 
-**概要**: プロジェクトCRUD・メンバー管理・お気に入り
-**優先度**: P0
-**依存**: T04, T05, T06
-**並列**: T13 と同時進行可能
+> **概要**: プロジェクトCRUD・メンバー管理・お気に入り / **依存**: T04, T05, T06 / **並列**: T13 と同時進行可能
 
-| サブタスク | 内容 | 依存 |
-|-----------|------|------|
-| T07-1 | ProjectRepository 実装（`lib/repositories/project.repository.ts`）: CRUD・メンバー管理・お気に入りフラグ | T04-1 |
-| T07-2 | ProjectService 実装（`lib/services/project.service.ts`）: プロジェクトCRUD・お気に入り管理・メンバー管理・指摘区分自動生成 | T07-1 |
-| T07-3 | プロジェクト一覧 API（`GET/POST /api/projects`）: ロール別フィルタ・ステータスフィルタ | T04-8, T07-2 |
-| T07-4 | プロジェクト詳細・更新 API（`GET/PUT /api/projects/[id]`） | T04-8, T07-2 |
-| T07-5 | お気に入り API（`PUT /api/projects/[id]/favorite`） | T04-8, T07-2 |
-| T07-6 | メンバー管理 API（`GET/POST /api/projects/[id]/members`, `DELETE /api/projects/[id]/members/[userId]`） | T04-8, T07-2 |
-| T07-7 | `components/features/project-list-table.tsx` (ProjectListTable): 検索・フィルタ・お気に入りトグル・楽観的更新 | T05-7, T05-11 |
-| T07-8 | プロジェクト一覧画面（`app/(main)/projects/page.tsx`）: TanStack Query キャッシュ設定（staleTime: 30秒） | T07-3, T07-7 |
-| T07-9 | `components/features/project-management-table.tsx` (ProjectManagementTable): 管理者用テーブル・アーカイブ操作 | T05-10, T05-11 |
-| T07-10 | プロジェクト管理画面（`app/admin/projects/page.tsx`）: 登録・編集・アーカイブ | T07-3, T07-4, T07-9 |
+- [ ] T07-1: ProjectRepository 実装（`lib/repositories/project.repository.ts`）: CRUD・メンバー管理・お気に入りフラグ
+- [ ] T07-2: ProjectService 実装（`lib/services/project.service.ts`）: プロジェクトCRUD・お気に入り管理・メンバー管理・指摘区分自動生成
+- [ ] T07-3: プロジェクト一覧 API（`GET/POST /api/projects`）: ロール別フィルタ・ステータスフィルタ
+- [ ] T07-4: プロジェクト詳細・更新 API（`GET/PUT /api/projects/[id]`）
+- [ ] T07-5: お気に入り API（`PUT /api/projects/[id]/favorite`）
+- [ ] T07-6: メンバー管理 API（`GET/POST /api/projects/[id]/members`, `DELETE /api/projects/[id]/members/[userId]`）
+- [ ] T07-7: `components/features/project-list-table.tsx` (ProjectListTable): 検索・フィルタ・お気に入りトグル・楽観的更新
+- [ ] T07-8: プロジェクト一覧画面（`app/(main)/projects/page.tsx`）: TanStack Query キャッシュ設定（staleTime: 30秒）
+- [ ] T07-9: `components/features/project-management-table.tsx` (ProjectManagementTable): 管理者用テーブル・アーカイブ操作
+- [ ] T07-10: プロジェクト管理画面（`app/admin/projects/page.tsx`）: 登録・編集・アーカイブ
 
 ---
 
 ## T08: WBS・タスク管理機能実装
 
-**概要**: タスクCRUD・ガントチャート・実績工数集計
-**優先度**: P0
-**依存**: T04, T05, T06, T07
-**並列**: T10, T11 と同時進行可能
+> **概要**: タスクCRUD・ガントチャート・実績工数集計 / **依存**: T04, T05, T06, T07 / **並列**: T10, T11 と同時進行可能
 
-| サブタスク | 内容 | 依存 |
-|-----------|------|------|
-| T08-1 | TaskRepository 実装（`lib/repositories/task.repository.ts`）: findByProjectWithActualHours（JOIN集計）・CRUD・findChildren | T04-1 |
-| T08-2 | TaskService 実装（`lib/services/task.service.ts`）: 階層3レベル制限チェック・日付バリデーション・CRUD | T08-1 |
-| T08-3 | タスク一覧 API（`GET /api/projects/[id]/tasks`）: 実績工数付き全タスク取得（ページネーションなし） | T04-8, T08-2 |
-| T08-4 | タスク登録 API（`POST /api/projects/[id]/tasks`）: 階層制限・バリデーション | T04-8, T08-2 |
-| T08-5 | タスク更新 API（`PUT /api/projects/[id]/tasks/[taskId]`）: ガントチャートD&D対応 | T04-8, T08-2 |
-| T08-6 | タスク削除 API（`DELETE /api/projects/[id]/tasks/[taskId]`）: 日報明細紐付きチェック | T04-8, T08-2 |
-| T08-7 | `components/features/task-slide-over.tsx` (TaskSlideOver): タスク登録/編集フォーム | T05-9 |
-| T08-8 | `components/features/wbs-tree-table.tsx` (WbsTreeTable): 階層ツリーテーブル・折りたたみ・予実工数表示 | T05-7, T05-11 |
-| T08-9 | `components/features/gantt-chart.tsx` (GanttChart): 日/週/月切替・D&Dによる期間変更・楽観的更新 | T05-13 |
-| T08-10 | WBS 画面（`app/(main)/projects/[id]/wbs/page.tsx`）: WBSビュー/ガントチャート切替 | T08-3〜6, T08-7〜9 |
+- [ ] T08-1: TaskRepository 実装（`lib/repositories/task.repository.ts`）: findByProjectWithActualHours（JOIN集計）・CRUD・findChildren
+- [ ] T08-2: TaskService 実装（`lib/services/task.service.ts`）: 階層3レベル制限チェック・日付バリデーション・CRUD
+- [ ] T08-3: タスク一覧 API（`GET /api/projects/[id]/tasks`）: 実績工数付き全タスク取得（ページネーションなし）
+- [ ] T08-4: タスク登録 API（`POST /api/projects/[id]/tasks`）: 階層制限・バリデーション
+- [ ] T08-5: タスク更新 API（`PUT /api/projects/[id]/tasks/[taskId]`）: ガントチャートD&D対応
+- [ ] T08-6: タスク削除 API（`DELETE /api/projects/[id]/tasks/[taskId]`）: 日報明細紐付きチェック
+- [ ] T08-7: `components/features/task-slide-over.tsx` (TaskSlideOver): タスク登録/編集フォーム
+- [ ] T08-8: `components/features/wbs-tree-table.tsx` (WbsTreeTable): 階層ツリーテーブル・折りたたみ・予実工数表示
+- [ ] T08-9: `components/features/gantt-chart.tsx` (GanttChart): 日/週/月切替・D&Dによる期間変更・楽観的更新
+- [ ] T08-10: WBS 画面（`app/(main)/projects/[id]/wbs/page.tsx`）: WBSビュー/ガントチャート切替
 
 ---
 
 ## T09: 日報・実績入力機能実装
 
-**概要**: 日報CRUD・カレンダービュー・WBS実績工数自動反映
-**優先度**: P0
-**依存**: T04, T05, T06, T07, T08（タスク選択プルダウン）
+> **概要**: 日報CRUD・カレンダービュー・WBS実績工数自動反映 / **依存**: T04, T05, T06, T07, T08
 
-| サブタスク | 内容 | 依存 |
-|-----------|------|------|
-| T09-1 | DailyReportRepository 実装（`lib/repositories/daily-report.repository.ts`）: ヘッダー・明細の CRUD・期間検索 | T04-1 |
-| T09-2 | DailyReportService 実装（`lib/services/daily-report.service.ts`）: 日報登録（同一TX・ヘッダー+明細）・将来日チェック・重複チェック | T09-1 |
-| T09-3 | 日報一覧 API（`GET /api/projects/[id]/daily-reports`）: userId・期間フィルタ・カレンダービュー兼用 | T04-8, T09-2 |
-| T09-4 | 日報登録 API（`POST /api/projects/[id]/daily-reports`）: 複数タスク明細・将来日・作業時間バリデーション | T04-8, T09-2 |
-| T09-5 | 日報更新 API（`PUT /api/projects/[id]/daily-reports/[reportId]`）: 明細差分更新（削除→再作成） | T04-8, T09-2 |
-| T09-6 | `components/features/daily-report-calendar.tsx` (DailyReportCalendar): 月次カレンダー・入力済み(✓)・未入力警告(⚠) | T05-12 |
-| T09-7 | `components/features/daily-report-list.tsx` (DailyReportList): リストビュー・期間フィルタ・テーブル | T05-11, T05-12 |
-| T09-8 | `components/features/daily-report-slide-over.tsx` (DailyReportSlideOver): 複数タスク行追加対応フォーム | T05-9 |
-| T09-9 | 日報画面（`app/(main)/projects/[id]/daily-reports/page.tsx`）: カレンダー/リスト切替 | T09-3〜5, T09-6〜8 |
+- [ ] T09-1: DailyReportRepository 実装（`lib/repositories/daily-report.repository.ts`）: ヘッダー・明細の CRUD・期間検索
+- [ ] T09-2: DailyReportService 実装（`lib/services/daily-report.service.ts`）: 日報登録（同一TX・ヘッダー+明細）・将来日チェック・重複チェック
+- [ ] T09-3: 日報一覧 API（`GET /api/projects/[id]/daily-reports`）: userId・期間フィルタ・カレンダービュー兼用
+- [ ] T09-4: 日報登録 API（`POST /api/projects/[id]/daily-reports`）: 複数タスク明細・将来日・作業時間バリデーション
+- [ ] T09-5: 日報更新 API（`PUT /api/projects/[id]/daily-reports/[reportId]`）: 明細差分更新（削除→再作成）
+- [ ] T09-6: `components/features/daily-report-calendar.tsx` (DailyReportCalendar): 月次カレンダー・入力済み(✓)・未入力警告(⚠)
+- [ ] T09-7: `components/features/daily-report-list.tsx` (DailyReportList): リストビュー・期間フィルタ・テーブル
+- [ ] T09-8: `components/features/daily-report-slide-over.tsx` (DailyReportSlideOver): 複数タスク行追加対応フォーム
+- [ ] T09-9: 日報画面（`app/(main)/projects/[id]/daily-reports/page.tsx`）: カレンダー/リスト切替
 
 ---
 
 ## T10: レビュー記録票管理機能実装
 
-**概要**: レビューセッション・指摘事項のCRUD・ステータス遷移
-**優先度**: P0
-**依存**: T04, T05, T06, T07
-**並列**: T08, T11 と同時進行可能
+> **概要**: レビューセッション・指摘事項のCRUD・ステータス遷移 / **依存**: T04, T05, T06, T07 / **並列**: T08, T11 と同時進行可能
 
-| サブタスク | 内容 | 依存 |
-|-----------|------|------|
-| T10-1 | ReviewRepository 実装（`lib/repositories/review.repository.ts`）: セッション・指摘・区分のCRUD・ステータスフィルタ | T04-1 |
-| T10-2 | ReviewService 実装（`lib/services/review.service.ts`）: セッション・指摘CRUD・ステータス遷移検証（未対応→修正中→確認待ち→完了、差し戻し対応） | T10-1 |
-| T10-3 | レビューセッション一覧 API（`GET/POST /api/projects/[id]/review-sessions`） | T04-8, T10-2 |
-| T10-4 | 指摘一覧 API（`GET/POST /api/projects/[id]/review-items`）: ステータス・区分・担当者フィルタ | T04-8, T10-2 |
-| T10-5 | 指摘更新 API（`PUT /api/projects/[id]/review-items/[itemId]`）: インラインステータス変更・楽観的更新対応 | T04-8, T10-2 |
-| T10-6 | 指摘区分一覧 API（`GET /api/projects/[id]/review-categories`） | T04-8, T10-2 |
-| T10-7 | `components/features/review-session-list.tsx` (ReviewSessionList): セッション一覧・指摘数・未対応数表示 | T05-11 |
-| T10-8 | `components/features/review-item-list.tsx` (ReviewItemList): 指摘一覧・インラインステータス変更 | T05-7, T05-8, T05-11 |
-| T10-9 | レビュー記録票画面（`app/(main)/projects/[id]/reviews/page.tsx`）: セッション一覧/指摘一覧タブ切替 | T10-3〜6, T10-7, T10-8 |
+- [ ] T10-1: ReviewRepository 実装（`lib/repositories/review.repository.ts`）: セッション・指摘・区分のCRUD・ステータスフィルタ
+- [ ] T10-2: ReviewService 実装（`lib/services/review.service.ts`）: セッション・指摘CRUD・ステータス遷移検証（未対応→修正中→確認待ち→完了、差し戻し対応）
+- [ ] T10-3: レビューセッション一覧 API（`GET/POST /api/projects/[id]/review-sessions`）
+- [ ] T10-4: 指摘一覧 API（`GET/POST /api/projects/[id]/review-items`）: ステータス・区分・担当者フィルタ
+- [ ] T10-5: 指摘更新 API（`PUT /api/projects/[id]/review-items/[itemId]`）: インラインステータス変更・楽観的更新対応
+- [ ] T10-6: 指摘区分一覧 API（`GET /api/projects/[id]/review-categories`）
+- [ ] T10-7: `components/features/review-session-list.tsx` (ReviewSessionList): セッション一覧・指摘数・未対応数表示
+- [ ] T10-8: `components/features/review-item-list.tsx` (ReviewItemList): 指摘一覧・インラインステータス変更
+- [ ] T10-9: レビュー記録票画面（`app/(main)/projects/[id]/reviews/page.tsx`）: セッション一覧/指摘一覧タブ切替
 
 ---
 
 ## T11: 障害管理票機能実装
 
-**概要**: 障害CRUD・自動採番・ステータス遷移
-**優先度**: P0
-**依存**: T04, T05, T06, T07
-**並列**: T08, T10 と同時進行可能
+> **概要**: 障害CRUD・自動採番・ステータス遷移 / **依存**: T04, T05, T06, T07 / **並列**: T08, T10 と同時進行可能
 
-| サブタスク | 内容 | 依存 |
-|-----------|------|------|
-| T11-1 | BugRepository 実装（`lib/repositories/bug.repository.ts`）: findByProjectWithFilters・CRUD・incrementBugSequence（SELECT FOR UPDATE） | T04-1 |
-| T11-2 | BugService 実装（`lib/services/bug.service.ts`）: 障害CRUD・BUG-XXX採番（排他制御）・ステータス遷移検証（未対応→調査中→修正中→確認待ち→クローズ） | T11-1 |
-| T11-3 | 障害一覧 API（`GET /api/projects/[id]/bugs`）: 重要度・ステータス・キーワードフィルタ | T04-8, T11-2 |
-| T11-4 | 障害登録 API（`POST /api/projects/[id]/bugs`）: 自動採番・バリデーション | T04-8, T11-2 |
-| T11-5 | 障害詳細 API（`GET /api/projects/[id]/bugs/[bugId]`） | T04-8, T11-2 |
-| T11-6 | 障害更新 API（`PUT /api/projects/[id]/bugs/[bugId]`）: ステータス遷移チェック | T04-8, T11-2 |
-| T11-7 | `components/features/bug-list.tsx` (BugList): 障害一覧テーブル・重要度・ステータスフィルタ・検索 | T05-7, T05-8, T05-11 |
-| T11-8 | `components/features/bug-slide-over.tsx` (BugSlideOver): 登録/詳細/編集フォーム・WBSタスク紐付け | T05-9 |
-| T11-9 | 障害管理画面（`app/(main)/projects/[id]/bugs/page.tsx`） | T11-3〜6, T11-7, T11-8 |
+- [ ] T11-1: BugRepository 実装（`lib/repositories/bug.repository.ts`）: findByProjectWithFilters・CRUD・incrementBugSequence（SELECT FOR UPDATE）
+- [ ] T11-2: BugService 実装（`lib/services/bug.service.ts`）: 障害CRUD・BUG-XXX採番（排他制御）・ステータス遷移検証（未対応→調査中→修正中→確認待ち→クローズ）
+- [ ] T11-3: 障害一覧 API（`GET /api/projects/[id]/bugs`）: 重要度・ステータス・キーワードフィルタ
+- [ ] T11-4: 障害登録 API（`POST /api/projects/[id]/bugs`）: 自動採番・バリデーション
+- [ ] T11-5: 障害詳細 API（`GET /api/projects/[id]/bugs/[bugId]`）
+- [ ] T11-6: 障害更新 API（`PUT /api/projects/[id]/bugs/[bugId]`）: ステータス遷移チェック
+- [ ] T11-7: `components/features/bug-list.tsx` (BugList): 障害一覧テーブル・重要度・ステータスフィルタ・検索
+- [ ] T11-8: `components/features/bug-slide-over.tsx` (BugSlideOver): 登録/詳細/編集フォーム・WBSタスク紐付け
+- [ ] T11-9: 障害管理画面（`app/(main)/projects/[id]/bugs/page.tsx`）
 
 ---
 
 ## T12: レポート・分析機能実装
 
-**概要**: ダッシュボード・EVM・信頼性成長曲線・指摘区分分析・障害密度分析
-**優先度**: P1
-**依存**: T04, T05, T06, T07, T08, T09, T10, T11
+> **概要**: ダッシュボード・EVM・信頼性成長曲線・指摘区分分析・障害密度分析 / **依存**: T04, T05, T06, T07, T08, T09, T10, T11
 
-| サブタスク | 内容 | 依存 |
-|-----------|------|------|
-| T12-1 | ReportService 実装（`lib/services/report.service.ts`）: getDashboard（並列クエリ）・getEvmData・getReliabilityGrowth・getReviewCategoryStats・getBugDensity | T04-1 |
-| T12-2 | ダッシュボード集計 API（`GET /api/projects/[id]/dashboard`）: SPI/CPI・タスク完了率・障害数・指摘数・日報フラグ | T04-8, T12-1 |
-| T12-3 | EVM 分析 API（`GET /api/projects/[id]/reports/evm`）: 日次累積 PV/AC/EV・SPI/CPI/残工数 | T04-8, T12-1 |
-| T12-4 | 信頼性成長曲線 API（`GET /api/projects/[id]/reports/reliability-growth`）: 累積バグ発見数・修正完了数 | T04-8, T12-1 |
-| T12-5 | 指摘区分分析 API（`GET /api/projects/[id]/reports/review-categories`）: 区分別件数・割合 | T04-8, T12-1 |
-| T12-6 | 障害密度分析 API（`GET /api/projects/[id]/reports/bug-density`）: 担当者別・WBSモジュール別件数 | T04-8, T12-1 |
-| T12-7 | `components/features/daily-report-alert.tsx` (DailyReportAlert): 日報未入力警告バナー（平日判定） | T05-2 |
-| T12-8 | `components/features/dashboard-summary-cards.tsx` (DashboardSummaryCards): SPI/CPI・障害数・指摘数・タスク完了率カード | T05-7 |
-| T12-9 | ダッシュボード画面（`app/(main)/projects/[id]/dashboard/page.tsx`）: TanStack Query（staleTime: 60秒） | T12-2, T12-7, T12-8 |
-| T12-10 | `components/features/evm-chart.tsx` (EvmChart): EVM折れ線グラフ（Recharts）・派生指標表示 | T01-2 |
-| T12-11 | `components/features/reliability-growth-chart.tsx` (ReliabilityGrowthChart): 累積バグ発見/修正完了 2系列折れ線グラフ | T01-2 |
-| T12-12 | `components/features/review-category-pie-chart.tsx` (ReviewCategoryPieChart): 指摘区分円グラフ＋件数テーブル | T01-2 |
-| T12-13 | `components/features/bug-density-bar-chart.tsx` (BugDensityBarChart): 担当者別・モジュール別障害密度棒グラフ | T01-2 |
-| T12-14 | レポート・分析画面（`app/(main)/projects/[id]/reports/page.tsx`）: 4タブ切替・期間フィルタ | T12-3〜6, T12-10〜13 |
+- [ ] T12-1: ReportService 実装（`lib/services/report.service.ts`）: getDashboard（並列クエリ）・getEvmData・getReliabilityGrowth・getReviewCategoryStats・getBugDensity
+- [ ] T12-2: ダッシュボード集計 API（`GET /api/projects/[id]/dashboard`）: SPI/CPI・タスク完了率・障害数・指摘数・日報フラグ
+- [ ] T12-3: EVM 分析 API（`GET /api/projects/[id]/reports/evm`）: 日次累積 PV/AC/EV・SPI/CPI/残工数
+- [ ] T12-4: 信頼性成長曲線 API（`GET /api/projects/[id]/reports/reliability-growth`）: 累積バグ発見数・修正完了数
+- [ ] T12-5: 指摘区分分析 API（`GET /api/projects/[id]/reports/review-categories`）: 区分別件数・割合
+- [ ] T12-6: 障害密度分析 API（`GET /api/projects/[id]/reports/bug-density`）: 担当者別・WBSモジュール別件数
+- [ ] T12-7: `components/features/daily-report-alert.tsx` (DailyReportAlert): 日報未入力警告バナー（平日判定）
+- [ ] T12-8: `components/features/dashboard-summary-cards.tsx` (DashboardSummaryCards): SPI/CPI・障害数・指摘数・タスク完了率カード
+- [ ] T12-9: ダッシュボード画面（`app/(main)/projects/[id]/dashboard/page.tsx`）: TanStack Query（staleTime: 60秒）
+- [ ] T12-10: `components/features/evm-chart.tsx` (EvmChart): EVM折れ線グラフ（Recharts）・派生指標表示
+- [ ] T12-11: `components/features/reliability-growth-chart.tsx` (ReliabilityGrowthChart): 累積バグ発見/修正完了 2系列折れ線グラフ
+- [ ] T12-12: `components/features/review-category-pie-chart.tsx` (ReviewCategoryPieChart): 指摘区分円グラフ＋件数テーブル
+- [ ] T12-13: `components/features/bug-density-bar-chart.tsx` (BugDensityBarChart): 担当者別・モジュール別障害密度棒グラフ
+- [ ] T12-14: レポート・分析画面（`app/(main)/projects/[id]/reports/page.tsx`）: 4タブ切替・期間フィルタ
 
 ---
 
 ## T13: ユーザー管理機能実装
 
-**概要**: 管理者によるユーザーCRUD・ロール管理・パスワードリセット
-**優先度**: P0
-**依存**: T04, T05, T06
-**並列**: T07 と同時進行可能
+> **概要**: 管理者によるユーザーCRUD・ロール管理・パスワードリセット / **依存**: T04, T05, T06 / **並列**: T07 と同時進行可能
 
-| サブタスク | 内容 | 依存 |
-|-----------|------|------|
-| T13-1 | AdminService 実装（`lib/services/admin.service.ts`）: ユーザー登録・更新（論理削除）・パスワードリセット・ロール管理 | T04-4, T06-2 |
-| T13-2 | ユーザー一覧 API（`GET /api/admin/users`）: 有効/無効フィルタ | T04-8, T13-1 |
-| T13-3 | ユーザー登録 API（`POST /api/admin/users`）: 初期パスワード設定・メール重複チェック | T04-8, T13-1 |
-| T13-4 | ユーザー更新 API（`PUT /api/admin/users/[id]`）: 氏名・ロール・有効/無効（論理削除） | T04-8, T13-1 |
-| T13-5 | パスワードリセット API（`POST /api/admin/users/[id]/reset-password`）: 強制パスワード変更フラグ設定 | T04-8, T13-1 |
-| T13-6 | `components/features/user-management-table.tsx` (UserManagementTable): ユーザー一覧・有効/無効フィルタ・編集ボタン | T05-11 |
-| T13-7 | ユーザー管理画面（`app/admin/users/page.tsx`）: 登録・編集ダイアログ・パスワードリセット | T13-2〜5, T13-6 |
+- [ ] T13-1: AdminService 実装（`lib/services/admin.service.ts`）: ユーザー登録・更新（論理削除）・パスワードリセット・ロール管理
+- [ ] T13-2: ユーザー一覧 API（`GET /api/admin/users`）: 有効/無効フィルタ
+- [ ] T13-3: ユーザー登録 API（`POST /api/admin/users`）: 初期パスワード設定・メール重複チェック
+- [ ] T13-4: ユーザー更新 API（`PUT /api/admin/users/[id]`）: 氏名・ロール・有効/無効（論理削除）
+- [ ] T13-5: パスワードリセット API（`POST /api/admin/users/[id]/reset-password`）: 強制パスワード変更フラグ設定
+- [ ] T13-6: `components/features/user-management-table.tsx` (UserManagementTable): ユーザー一覧・有効/無効フィルタ・編集ボタン
+- [ ] T13-7: ユーザー管理画面（`app/admin/users/page.tsx`）: 登録・編集ダイアログ・パスワードリセット
 
 ---
 
 ## T14: テスト実装
 
-**概要**: 単体テスト・結合テスト・E2Eテスト
-**優先度**: P0（単体）/ P1（結合・E2E）
-**依存**: T04〜T13（各機能実装後に順次並列実行可能）
+> **概要**: 単体テスト・結合テスト・E2Eテスト / **依存**: T04〜T13（各機能実装後に順次並列実行可能）
 
 ### T14-A: 単体テスト（Vitest）
 
-| サブタスク | 内容 | 依存 |
-|-----------|------|------|
-| T14-A1 | TaskService 単体テスト（TC-UT-001〜005）: 階層制限・日付バリデーション・D&D更新 | T08-2 |
-| T14-A2 | DailyReportService 単体テスト（TC-UT-006〜009）: 日報登録・将来日・重複・作業時間0 | T09-2 |
-| T14-A3 | BugService 単体テスト（TC-UT-010〜013）: 採番・連番・ステータス遷移 | T11-2 |
-| T14-A4 | ReviewService 単体テスト（TC-UT-014〜015）: 差し戻し遷移・不正遷移 | T10-2 |
-| T14-A5 | ユーティリティ単体テスト（TC-UT-016〜020）: パスワードバリデーション・エラーハンドラ | T04-4〜6 |
-| T14-A6 | ProjectService 単体テスト: お気に入り管理・メンバー管理・指摘区分自動生成 | T07-2 |
-| T14-A7 | AdminService 単体テスト: ユーザー登録・論理削除・パスワードリセット | T13-1 |
+- [ ] T14-A1: TaskService 単体テスト（TC-UT-001〜005）: 階層制限・日付バリデーション・D&D更新
+- [ ] T14-A2: DailyReportService 単体テスト（TC-UT-006〜009）: 日報登録・将来日・重複・作業時間0
+- [ ] T14-A3: BugService 単体テスト（TC-UT-010〜013）: 採番・連番・ステータス遷移
+- [ ] T14-A4: ReviewService 単体テスト（TC-UT-014〜015）: 差し戻し遷移・不正遷移
+- [ ] T14-A5: ユーティリティ単体テスト（TC-UT-016〜020）: パスワードバリデーション・エラーハンドラ
+- [ ] T14-A6: ProjectService 単体テスト: お気に入り管理・メンバー管理・指摘区分自動生成
+- [ ] T14-A7: AdminService 単体テスト: ユーザー登録・論理削除・パスワードリセット
 
 ### T14-B: 結合テスト（Vitest + テスト DB）
 
-| サブタスク | 内容 | 依存 |
-|-----------|------|------|
-| T14-B1 | 認証・認可 結合テスト（TC-IT-001〜005）: ログイン・誤パスワード・未認証・権限不足 | T06-3〜5 |
-| T14-B2 | プロジェクト・WBS 結合テスト（TC-IT-006〜010）: プロジェクト一覧・タスク登録・権限・階層制限・実績工数 | T07-3〜6, T08-3〜6 |
-| T14-B3 | 日報 結合テスト（TC-IT-011〜014）: 日報登録・重複・PMO権限・カレンダーデータ取得 | T09-3〜5 |
-| T14-B4 | 障害・レビュー 結合テスト（TC-IT-015〜017）: 採番・不正遷移・差し戻し | T11-3〜6, T10-3〜6 |
-| T14-B5 | レポート 結合テスト（TC-IT-018〜019）: EVMデータ・ダッシュボード集計 | T12-2〜6 |
+- [ ] T14-B1: 認証・認可 結合テスト（TC-IT-001〜005）: ログイン・誤パスワード・未認証・権限不足
+- [ ] T14-B2: プロジェクト・WBS 結合テスト（TC-IT-006〜010）: プロジェクト一覧・タスク登録・権限・階層制限・実績工数
+- [ ] T14-B3: 日報 結合テスト（TC-IT-011〜014）: 日報登録・重複・PMO権限・カレンダーデータ取得
+- [ ] T14-B4: 障害・レビュー 結合テスト（TC-IT-015〜017）: 採番・不正遷移・差し戻し
+- [ ] T14-B5: レポート 結合テスト（TC-IT-018〜019）: EVMデータ・ダッシュボード集計
 
 ### T14-C: E2Eテスト（Playwright）
 
-| サブタスク | 内容 | 依存 |
-|-----------|------|------|
-| T14-C1 | TC-E2E-001: ログイン → ダッシュボード表示シナリオ | T06, T12-9 |
-| T14-C2 | TC-E2E-002: WBSタスク登録 → 一覧確認シナリオ | T08-10 |
-| T14-C3 | TC-E2E-003: 日報入力 → WBS実績工数自動反映確認シナリオ | T09-9, T08-10 |
-| T14-C4 | TC-E2E-004: 障害登録 → ステータス更新フローシナリオ | T11-9 |
-| T14-C5 | TC-E2E-005: レポート画面（EVM グラフ）表示シナリオ | T12-14 |
-
----
-
-## ステータス管理
-
-| ステータス | 説明 |
-|-----------|------|
-| 🔲 未着手 | 未開始 |
-| 🔄 進行中 | 実装中 |
-| ✅ 完了 | 実装・テスト完了 |
-
-## 優先度別フェーズ計画
-
-| フェーズ | タスク | 主要成果物 |
-|---------|--------|-----------|
-| Phase 1: 基盤構築 | T01, T02, T03, T04, T05 | 開発・Docker環境, DB, 共通基盤 |
-| Phase 2: 認証・プロジェクト | T06, T07, T13 | ログイン, プロジェクト一覧, ユーザー管理 |
-| Phase 3: 主要機能 | T08, T09, T10, T11 | WBS, 日報, レビュー, 障害管理 |
-| Phase 4: レポート・分析 | T12 | ダッシュボード, グラフ |
-| Phase 5: テスト | T14 | 単体・結合・E2Eテスト |
+- [ ] T14-C1: TC-E2E-001: ログイン → ダッシュボード表示シナリオ
+- [ ] T14-C2: TC-E2E-002: WBSタスク登録 → 一覧確認シナリオ
+- [ ] T14-C3: TC-E2E-003: 日報入力 → WBS実績工数自動反映確認シナリオ
+- [ ] T14-C4: TC-E2E-004: 障害登録 → ステータス更新フローシナリオ
+- [ ] T14-C5: TC-E2E-005: レポート画面（EVM グラフ）表示シナリオ
