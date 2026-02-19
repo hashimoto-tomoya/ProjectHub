@@ -17,13 +17,7 @@ export default defineConfig({
       provider: "v8",
       reporter: ["text", "json", "html"],
       include: ["lib/**", "app/**"],
-      exclude: [
-        "node_modules/**",
-        ".next/**",
-        "tests/**",
-        "**/*.d.ts",
-        "**/*.config.*",
-      ],
+      exclude: ["node_modules/**", ".next/**", "tests/**", "**/*.d.ts", "**/*.config.*"],
     },
   },
   resolve: {
