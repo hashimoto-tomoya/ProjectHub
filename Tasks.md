@@ -1,5 +1,16 @@
 # ProjectHub 実装タスク一覧
 
+## TDD サイクルについて
+
+このプロジェクトでは **RED → GREEN** のサイクルで開発を進める。
+
+- **[RED]** テスト作成: 期待する入出力に基づきテストを先に書き、失敗を確認する
+- **[GREEN]** 実装: テストをパスさせる最小限の実装を行う
+- 単体テスト（Vitest）は各機能タスク内に組み込み済み
+- 結合テスト（T14-B）・E2Eテスト（T14-C）は各機能完成後に順次実施
+
+---
+
 ## 依存関係マップ
 
 ```
@@ -15,7 +26,7 @@ T01（初期セットアップ）
                     │     └── T11（障害管理）         │
                     │           └── T12（レポート・分析）
                     └── T13（ユーザー管理）          │
-                                                   └── T14（テスト）
+                                                   └── T14（結合・E2Eテスト）
 ```
 
 ### 並列作業が可能なグループ
@@ -81,12 +92,15 @@ T01（初期セットアップ）
 - [ ] T04-1: `lib/prisma/client.ts` 実装（Prisma Client シングルトン・開発環境 hot reload 対策）
 - [ ] T04-2: `lib/types/domain.ts` 定義（Role, ProjectStatus, TaskStatus, ReviewItemStatus, BugStatus, Severity, DashboardData, EvmDataPoint 等）
 - [ ] T04-3: `lib/types/api.ts` 定義（各 API リクエスト/レスポンス型）
-- [ ] T04-4: `lib/utils/password.ts` 実装（bcrypt ハッシュ化・検証, コストファクター12）
-- [ ] T04-5: `lib/utils/validation.ts` 実装（Zod スキーマ共通定義: パスワードポリシー・日付・各エンティティ）
-- [ ] T04-6: `lib/utils/error.ts` 実装（カスタムエラークラス・`handleApiError` 共通エラーハンドラ）
-- [ ] T04-7: NextAuth.js 設定（`app/api/auth/[...nextauth]/route.ts`）: Credentials Provider, セッション管理, `mustChangePassword` フラグ
-- [ ] T04-8: `lib/auth/session.ts` 実装（`requireAuth`, `requireRole`, `requireProjectMember` ヘルパー）
-- [ ] T04-9: `app/middleware.ts` 実装（ルートガード: 未認証リダイレクト・管理者チェック・パスワード変更強制）
+- [ ] T04-4: **[RED]** `tests/unit/utils/password.test.ts` 作成（TC-UT-016: ハッシュ化・検証・ポリシー違反テスト・失敗確認）
+- [ ] T04-5: **[GREEN]** `lib/utils/password.ts` 実装（bcrypt ハッシュ化・検証, コストファクター12）
+- [ ] T04-6: **[RED]** `tests/unit/utils/validation.test.ts` 作成（Zod スキーマ: パスワードポリシー・日付・各エンティティバリデーションテスト・失敗確認）
+- [ ] T04-7: **[GREEN]** `lib/utils/validation.ts` 実装（Zod スキーマ共通定義）
+- [ ] T04-8: **[RED]** `tests/unit/utils/error.test.ts` 作成（TC-UT-017〜020: カスタムエラークラス・`handleApiError` テスト・失敗確認）
+- [ ] T04-9: **[GREEN]** `lib/utils/error.ts` 実装（カスタムエラークラス・`handleApiError` 共通エラーハンドラ）
+- [ ] T04-10: NextAuth.js 設定（`app/api/auth/[...nextauth]/route.ts`）: Credentials Provider, セッション管理, `mustChangePassword` フラグ
+- [ ] T04-11: `lib/auth/session.ts` 実装（`requireAuth`, `requireRole`, `requireProjectMember` ヘルパー）
+- [ ] T04-12: `app/middleware.ts` 実装（ルートガード: 未認証リダイレクト・管理者チェック・パスワード変更強制）
 
 ---
 
@@ -114,11 +128,12 @@ T01（初期セットアップ）
 
 > **概要**: ログイン画面・パスワード管理・AuthService / **依存**: T04, T05
 
-- [ ] T06-1: AuthService 実装（`lib/services/auth.service.ts`）: パスワード変更・初回ログイン検証・パスワード履歴3世代管理
-- [ ] T06-2: UserRepository 実装（`lib/repositories/user.repository.ts`）: findByEmail, findById, create, update（論理削除対応）
-- [ ] T06-3: ログイン画面（`app/(auth)/login/page.tsx`）: メールアドレス・パスワード入力・エラー表示
-- [ ] T06-4: パスワード変更画面（`app/(main)/users/me/change-password/page.tsx`）: 現パスワード確認・新パスワード入力
-- [ ] T06-5: パスワード変更 API 実装（`PUT /api/users/me/password`）: バリデーション・現パスワード確認・ハッシュ更新
+- [ ] T06-1: **[RED]** `tests/unit/services/auth.service.test.ts` 作成（パスワード変更・初回ログイン検証・パスワード履歴3世代チェックテスト・失敗確認）
+- [ ] T06-2: **[GREEN]** UserRepository 実装（`lib/repositories/user.repository.ts`）: findByEmail, findById, create, update（論理削除対応）
+- [ ] T06-3: **[GREEN]** AuthService 実装（`lib/services/auth.service.ts`）: パスワード変更・初回ログイン検証・パスワード履歴3世代管理（T06-1テストをパス）
+- [ ] T06-4: ログイン画面（`app/(auth)/login/page.tsx`）: メールアドレス・パスワード入力・エラー表示
+- [ ] T06-5: パスワード変更画面（`app/(main)/users/me/change-password/page.tsx`）: 現パスワード確認・新パスワード入力
+- [ ] T06-6: パスワード変更 API 実装（`PUT /api/users/me/password`）: バリデーション・現パスワード確認・ハッシュ更新
 
 ---
 
@@ -126,16 +141,17 @@ T01（初期セットアップ）
 
 > **概要**: プロジェクトCRUD・メンバー管理・お気に入り / **依存**: T04, T05, T06 / **並列**: T13 と同時進行可能
 
-- [ ] T07-1: ProjectRepository 実装（`lib/repositories/project.repository.ts`）: CRUD・メンバー管理・お気に入りフラグ
-- [ ] T07-2: ProjectService 実装（`lib/services/project.service.ts`）: プロジェクトCRUD・お気に入り管理・メンバー管理・指摘区分自動生成
-- [ ] T07-3: プロジェクト一覧 API（`GET/POST /api/projects`）: ロール別フィルタ・ステータスフィルタ
-- [ ] T07-4: プロジェクト詳細・更新 API（`GET/PUT /api/projects/[id]`）
-- [ ] T07-5: お気に入り API（`PUT /api/projects/[id]/favorite`）
-- [ ] T07-6: メンバー管理 API（`GET/POST /api/projects/[id]/members`, `DELETE /api/projects/[id]/members/[userId]`）
-- [ ] T07-7: `components/features/project-list-table.tsx` (ProjectListTable): 検索・フィルタ・お気に入りトグル・楽観的更新
-- [ ] T07-8: プロジェクト一覧画面（`app/(main)/projects/page.tsx`）: TanStack Query キャッシュ設定（staleTime: 30秒）
-- [ ] T07-9: `components/features/project-management-table.tsx` (ProjectManagementTable): 管理者用テーブル・アーカイブ操作
-- [ ] T07-10: プロジェクト管理画面（`app/admin/projects/page.tsx`）: 登録・編集・アーカイブ
+- [ ] T07-1: **[RED]** `tests/unit/services/project.service.test.ts` 作成（お気に入り管理・メンバー管理・指摘区分自動生成テスト・失敗確認）
+- [ ] T07-2: **[GREEN]** ProjectRepository 実装（`lib/repositories/project.repository.ts`）: CRUD・メンバー管理・お気に入りフラグ
+- [ ] T07-3: **[GREEN]** ProjectService 実装（`lib/services/project.service.ts`）: プロジェクトCRUD・お気に入り管理・メンバー管理・指摘区分自動生成（T07-1テストをパス）
+- [ ] T07-4: プロジェクト一覧 API（`GET/POST /api/projects`）: ロール別フィルタ・ステータスフィルタ
+- [ ] T07-5: プロジェクト詳細・更新 API（`GET/PUT /api/projects/[id]`）
+- [ ] T07-6: お気に入り API（`PUT /api/projects/[id]/favorite`）
+- [ ] T07-7: メンバー管理 API（`GET/POST /api/projects/[id]/members`, `DELETE /api/projects/[id]/members/[userId]`）
+- [ ] T07-8: `components/features/project-list-table.tsx` (ProjectListTable): 検索・フィルタ・お気に入りトグル・楽観的更新
+- [ ] T07-9: プロジェクト一覧画面（`app/(main)/projects/page.tsx`）: TanStack Query キャッシュ設定（staleTime: 30秒）
+- [ ] T07-10: `components/features/project-management-table.tsx` (ProjectManagementTable): 管理者用テーブル・アーカイブ操作
+- [ ] T07-11: プロジェクト管理画面（`app/admin/projects/page.tsx`）: 登録・編集・アーカイブ
 
 ---
 
@@ -143,16 +159,17 @@ T01（初期セットアップ）
 
 > **概要**: タスクCRUD・ガントチャート・実績工数集計 / **依存**: T04, T05, T06, T07 / **並列**: T10, T11 と同時進行可能
 
-- [ ] T08-1: TaskRepository 実装（`lib/repositories/task.repository.ts`）: findByProjectWithActualHours（JOIN集計）・CRUD・findChildren
-- [ ] T08-2: TaskService 実装（`lib/services/task.service.ts`）: 階層3レベル制限チェック・日付バリデーション・CRUD
-- [ ] T08-3: タスク一覧 API（`GET /api/projects/[id]/tasks`）: 実績工数付き全タスク取得（ページネーションなし）
-- [ ] T08-4: タスク登録 API（`POST /api/projects/[id]/tasks`）: 階層制限・バリデーション
-- [ ] T08-5: タスク更新 API（`PUT /api/projects/[id]/tasks/[taskId]`）: ガントチャートD&D対応
-- [ ] T08-6: タスク削除 API（`DELETE /api/projects/[id]/tasks/[taskId]`）: 日報明細紐付きチェック
-- [ ] T08-7: `components/features/task-slide-over.tsx` (TaskSlideOver): タスク登録/編集フォーム
-- [ ] T08-8: `components/features/wbs-tree-table.tsx` (WbsTreeTable): 階層ツリーテーブル・折りたたみ・予実工数表示
-- [ ] T08-9: `components/features/gantt-chart.tsx` (GanttChart): 日/週/月切替・D&Dによる期間変更・楽観的更新
-- [ ] T08-10: WBS 画面（`app/(main)/projects/[id]/wbs/page.tsx`）: WBSビュー/ガントチャート切替
+- [ ] T08-1: **[RED]** `tests/unit/services/task.service.test.ts` 作成（TC-UT-001〜005: 階層3レベル超過エラー・日付バリデーション・D&D期間更新テスト・失敗確認）
+- [ ] T08-2: **[GREEN]** TaskRepository 実装（`lib/repositories/task.repository.ts`）: findByProjectWithActualHours（JOIN集計）・CRUD・findChildren
+- [ ] T08-3: **[GREEN]** TaskService 実装（`lib/services/task.service.ts`）: 階層3レベル制限チェック・日付バリデーション・CRUD（T08-1テストをパス）
+- [ ] T08-4: タスク一覧 API（`GET /api/projects/[id]/tasks`）: 実績工数付き全タスク取得（ページネーションなし）
+- [ ] T08-5: タスク登録 API（`POST /api/projects/[id]/tasks`）: 階層制限・バリデーション
+- [ ] T08-6: タスク更新 API（`PUT /api/projects/[id]/tasks/[taskId]`）: ガントチャートD&D対応
+- [ ] T08-7: タスク削除 API（`DELETE /api/projects/[id]/tasks/[taskId]`）: 日報明細紐付きチェック
+- [ ] T08-8: `components/features/task-slide-over.tsx` (TaskSlideOver): タスク登録/編集フォーム
+- [ ] T08-9: `components/features/wbs-tree-table.tsx` (WbsTreeTable): 階層ツリーテーブル・折りたたみ・予実工数表示
+- [ ] T08-10: `components/features/gantt-chart.tsx` (GanttChart): 日/週/月切替・D&Dによる期間変更・楽観的更新
+- [ ] T08-11: WBS 画面（`app/(main)/projects/[id]/wbs/page.tsx`）: WBSビュー/ガントチャート切替
 
 ---
 
@@ -160,15 +177,16 @@ T01（初期セットアップ）
 
 > **概要**: 日報CRUD・カレンダービュー・WBS実績工数自動反映 / **依存**: T04, T05, T06, T07, T08
 
-- [ ] T09-1: DailyReportRepository 実装（`lib/repositories/daily-report.repository.ts`）: ヘッダー・明細の CRUD・期間検索
-- [ ] T09-2: DailyReportService 実装（`lib/services/daily-report.service.ts`）: 日報登録（同一TX・ヘッダー+明細）・将来日チェック・重複チェック
-- [ ] T09-3: 日報一覧 API（`GET /api/projects/[id]/daily-reports`）: userId・期間フィルタ・カレンダービュー兼用
-- [ ] T09-4: 日報登録 API（`POST /api/projects/[id]/daily-reports`）: 複数タスク明細・将来日・作業時間バリデーション
-- [ ] T09-5: 日報更新 API（`PUT /api/projects/[id]/daily-reports/[reportId]`）: 明細差分更新（削除→再作成）
-- [ ] T09-6: `components/features/daily-report-calendar.tsx` (DailyReportCalendar): 月次カレンダー・入力済み(✓)・未入力警告(⚠)
-- [ ] T09-7: `components/features/daily-report-list.tsx` (DailyReportList): リストビュー・期間フィルタ・テーブル
-- [ ] T09-8: `components/features/daily-report-slide-over.tsx` (DailyReportSlideOver): 複数タスク行追加対応フォーム
-- [ ] T09-9: 日報画面（`app/(main)/projects/[id]/daily-reports/page.tsx`）: カレンダー/リスト切替
+- [ ] T09-1: **[RED]** `tests/unit/services/daily-report.service.test.ts` 作成（TC-UT-006〜009: 日報登録・将来日付エラー・同日重複エラー・作業時間0バリデーションテスト・失敗確認）
+- [ ] T09-2: **[GREEN]** DailyReportRepository 実装（`lib/repositories/daily-report.repository.ts`）: ヘッダー・明細の CRUD・期間検索
+- [ ] T09-3: **[GREEN]** DailyReportService 実装（`lib/services/daily-report.service.ts`）: 日報登録（同一TX・ヘッダー+明細）・将来日チェック・重複チェック（T09-1テストをパス）
+- [ ] T09-4: 日報一覧 API（`GET /api/projects/[id]/daily-reports`）: userId・期間フィルタ・カレンダービュー兼用
+- [ ] T09-5: 日報登録 API（`POST /api/projects/[id]/daily-reports`）: 複数タスク明細・将来日・作業時間バリデーション
+- [ ] T09-6: 日報更新 API（`PUT /api/projects/[id]/daily-reports/[reportId]`）: 明細差分更新（削除→再作成）
+- [ ] T09-7: `components/features/daily-report-calendar.tsx` (DailyReportCalendar): 月次カレンダー・入力済み(✓)・未入力警告(⚠)
+- [ ] T09-8: `components/features/daily-report-list.tsx` (DailyReportList): リストビュー・期間フィルタ・テーブル
+- [ ] T09-9: `components/features/daily-report-slide-over.tsx` (DailyReportSlideOver): 複数タスク行追加対応フォーム
+- [ ] T09-10: 日報画面（`app/(main)/projects/[id]/daily-reports/page.tsx`）: カレンダー/リスト切替
 
 ---
 
@@ -176,15 +194,16 @@ T01（初期セットアップ）
 
 > **概要**: レビューセッション・指摘事項のCRUD・ステータス遷移 / **依存**: T04, T05, T06, T07 / **並列**: T08, T11 と同時進行可能
 
-- [ ] T10-1: ReviewRepository 実装（`lib/repositories/review.repository.ts`）: セッション・指摘・区分のCRUD・ステータスフィルタ
-- [ ] T10-2: ReviewService 実装（`lib/services/review.service.ts`）: セッション・指摘CRUD・ステータス遷移検証（未対応→修正中→確認待ち→完了、差し戻し対応）
-- [ ] T10-3: レビューセッション一覧 API（`GET/POST /api/projects/[id]/review-sessions`）
-- [ ] T10-4: 指摘一覧 API（`GET/POST /api/projects/[id]/review-items`）: ステータス・区分・担当者フィルタ
-- [ ] T10-5: 指摘更新 API（`PUT /api/projects/[id]/review-items/[itemId]`）: インラインステータス変更・楽観的更新対応
-- [ ] T10-6: 指摘区分一覧 API（`GET /api/projects/[id]/review-categories`）
-- [ ] T10-7: `components/features/review-session-list.tsx` (ReviewSessionList): セッション一覧・指摘数・未対応数表示
-- [ ] T10-8: `components/features/review-item-list.tsx` (ReviewItemList): 指摘一覧・インラインステータス変更
-- [ ] T10-9: レビュー記録票画面（`app/(main)/projects/[id]/reviews/page.tsx`）: セッション一覧/指摘一覧タブ切替
+- [ ] T10-1: **[RED]** `tests/unit/services/review.service.test.ts` 作成（TC-UT-014〜015: 差し戻し遷移・不正ステータス遷移エラーテスト・失敗確認）
+- [ ] T10-2: **[GREEN]** ReviewRepository 実装（`lib/repositories/review.repository.ts`）: セッション・指摘・区分のCRUD・ステータスフィルタ
+- [ ] T10-3: **[GREEN]** ReviewService 実装（`lib/services/review.service.ts`）: セッション・指摘CRUD・ステータス遷移検証（未対応→修正中→確認待ち→完了、差し戻し対応）（T10-1テストをパス）
+- [ ] T10-4: レビューセッション一覧 API（`GET/POST /api/projects/[id]/review-sessions`）
+- [ ] T10-5: 指摘一覧 API（`GET/POST /api/projects/[id]/review-items`）: ステータス・区分・担当者フィルタ
+- [ ] T10-6: 指摘更新 API（`PUT /api/projects/[id]/review-items/[itemId]`）: インラインステータス変更・楽観的更新対応
+- [ ] T10-7: 指摘区分一覧 API（`GET /api/projects/[id]/review-categories`）
+- [ ] T10-8: `components/features/review-session-list.tsx` (ReviewSessionList): セッション一覧・指摘数・未対応数表示
+- [ ] T10-9: `components/features/review-item-list.tsx` (ReviewItemList): 指摘一覧・インラインステータス変更
+- [ ] T10-10: レビュー記録票画面（`app/(main)/projects/[id]/reviews/page.tsx`）: セッション一覧/指摘一覧タブ切替
 
 ---
 
@@ -192,15 +211,16 @@ T01（初期セットアップ）
 
 > **概要**: 障害CRUD・自動採番・ステータス遷移 / **依存**: T04, T05, T06, T07 / **並列**: T08, T10 と同時進行可能
 
-- [ ] T11-1: BugRepository 実装（`lib/repositories/bug.repository.ts`）: findByProjectWithFilters・CRUD・incrementBugSequence（SELECT FOR UPDATE）
-- [ ] T11-2: BugService 実装（`lib/services/bug.service.ts`）: 障害CRUD・BUG-XXX採番（排他制御）・ステータス遷移検証（未対応→調査中→修正中→確認待ち→クローズ）
-- [ ] T11-3: 障害一覧 API（`GET /api/projects/[id]/bugs`）: 重要度・ステータス・キーワードフィルタ
-- [ ] T11-4: 障害登録 API（`POST /api/projects/[id]/bugs`）: 自動採番・バリデーション
-- [ ] T11-5: 障害詳細 API（`GET /api/projects/[id]/bugs/[bugId]`）
-- [ ] T11-6: 障害更新 API（`PUT /api/projects/[id]/bugs/[bugId]`）: ステータス遷移チェック
-- [ ] T11-7: `components/features/bug-list.tsx` (BugList): 障害一覧テーブル・重要度・ステータスフィルタ・検索
-- [ ] T11-8: `components/features/bug-slide-over.tsx` (BugSlideOver): 登録/詳細/編集フォーム・WBSタスク紐付け
-- [ ] T11-9: 障害管理画面（`app/(main)/projects/[id]/bugs/page.tsx`）
+- [ ] T11-1: **[RED]** `tests/unit/services/bug.service.test.ts` 作成（TC-UT-010〜013: BUG-001採番・連番インクリメント・不正ステータス遷移エラーテスト・失敗確認）
+- [ ] T11-2: **[GREEN]** BugRepository 実装（`lib/repositories/bug.repository.ts`）: findByProjectWithFilters・CRUD・incrementBugSequence（SELECT FOR UPDATE）
+- [ ] T11-3: **[GREEN]** BugService 実装（`lib/services/bug.service.ts`）: 障害CRUD・BUG-XXX採番（排他制御）・ステータス遷移検証（未対応→調査中→修正中→確認待ち→クローズ）（T11-1テストをパス）
+- [ ] T11-4: 障害一覧 API（`GET /api/projects/[id]/bugs`）: 重要度・ステータス・キーワードフィルタ
+- [ ] T11-5: 障害登録 API（`POST /api/projects/[id]/bugs`）: 自動採番・バリデーション
+- [ ] T11-6: 障害詳細 API（`GET /api/projects/[id]/bugs/[bugId]`）
+- [ ] T11-7: 障害更新 API（`PUT /api/projects/[id]/bugs/[bugId]`）: ステータス遷移チェック
+- [ ] T11-8: `components/features/bug-list.tsx` (BugList): 障害一覧テーブル・重要度・ステータスフィルタ・検索
+- [ ] T11-9: `components/features/bug-slide-over.tsx` (BugSlideOver): 登録/詳細/編集フォーム・WBSタスク紐付け
+- [ ] T11-10: 障害管理画面（`app/(main)/projects/[id]/bugs/page.tsx`）
 
 ---
 
@@ -229,29 +249,22 @@ T01（初期セットアップ）
 
 > **概要**: 管理者によるユーザーCRUD・ロール管理・パスワードリセット / **依存**: T04, T05, T06 / **並列**: T07 と同時進行可能
 
-- [ ] T13-1: AdminService 実装（`lib/services/admin.service.ts`）: ユーザー登録・更新（論理削除）・パスワードリセット・ロール管理
-- [ ] T13-2: ユーザー一覧 API（`GET /api/admin/users`）: 有効/無効フィルタ
-- [ ] T13-3: ユーザー登録 API（`POST /api/admin/users`）: 初期パスワード設定・メール重複チェック
-- [ ] T13-4: ユーザー更新 API（`PUT /api/admin/users/[id]`）: 氏名・ロール・有効/無効（論理削除）
-- [ ] T13-5: パスワードリセット API（`POST /api/admin/users/[id]/reset-password`）: 強制パスワード変更フラグ設定
-- [ ] T13-6: `components/features/user-management-table.tsx` (UserManagementTable): ユーザー一覧・有効/無効フィルタ・編集ボタン
-- [ ] T13-7: ユーザー管理画面（`app/admin/users/page.tsx`）: 登録・編集ダイアログ・パスワードリセット
+- [ ] T13-1: **[RED]** `tests/unit/services/admin.service.test.ts` 作成（ユーザー登録・論理削除・パスワードリセット（mustChangePassword フラグ設定）・メール重複エラーテスト・失敗確認）
+- [ ] T13-2: **[GREEN]** AdminService 実装（`lib/services/admin.service.ts`）: ユーザー登録・更新（論理削除）・パスワードリセット・ロール管理（T13-1テストをパス）
+- [ ] T13-3: ユーザー一覧 API（`GET /api/admin/users`）: 有効/無効フィルタ
+- [ ] T13-4: ユーザー登録 API（`POST /api/admin/users`）: 初期パスワード設定・メール重複チェック
+- [ ] T13-5: ユーザー更新 API（`PUT /api/admin/users/[id]`）: 氏名・ロール・有効/無効（論理削除）
+- [ ] T13-6: パスワードリセット API（`POST /api/admin/users/[id]/reset-password`）: 強制パスワード変更フラグ設定
+- [ ] T13-7: `components/features/user-management-table.tsx` (UserManagementTable): ユーザー一覧・有効/無効フィルタ・編集ボタン
+- [ ] T13-8: ユーザー管理画面（`app/admin/users/page.tsx`）: 登録・編集ダイアログ・パスワードリセット
 
 ---
 
-## T14: テスト実装
+## T14: 結合テスト・E2Eテスト
 
-> **概要**: 単体テスト・結合テスト・E2Eテスト / **依存**: T04〜T13（各機能実装後に順次並列実行可能）
-
-### T14-A: 単体テスト（Vitest）
-
-- [ ] T14-A1: TaskService 単体テスト（TC-UT-001〜005）: 階層制限・日付バリデーション・D&D更新
-- [ ] T14-A2: DailyReportService 単体テスト（TC-UT-006〜009）: 日報登録・将来日・重複・作業時間0
-- [ ] T14-A3: BugService 単体テスト（TC-UT-010〜013）: 採番・連番・ステータス遷移
-- [ ] T14-A4: ReviewService 単体テスト（TC-UT-014〜015）: 差し戻し遷移・不正遷移
-- [ ] T14-A5: ユーティリティ単体テスト（TC-UT-016〜020）: パスワードバリデーション・エラーハンドラ
-- [ ] T14-A6: ProjectService 単体テスト: お気に入り管理・メンバー管理・指摘区分自動生成
-- [ ] T14-A7: AdminService 単体テスト: ユーザー登録・論理削除・パスワードリセット
+> **概要**: 結合テスト・E2Eテスト / **依存**: T04〜T13（各機能実装後に順次並列実行可能）
+>
+> ※ 単体テスト（Vitest）は各機能タスク（T04〜T13）の `[RED]` / `[GREEN]` ステップに統合済み
 
 ### T14-B: 結合テスト（Vitest + テスト DB）
 
