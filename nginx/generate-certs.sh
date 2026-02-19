@@ -22,7 +22,8 @@ openssl req -x509 -nodes -days "$DAYS" \
   -newkey rsa:2048 \
   -keyout "$CERT_DIR/server.key" \
   -out "$CERT_DIR/server.crt" \
-  -subj "/CN=$CN"
+  -subj "/CN=$CN" \
+  -addext "subjectAltName=DNS:$CN,DNS:localhost,IP:127.0.0.1"
 
 echo ""
 echo "Certificate generated:"
