@@ -47,12 +47,12 @@ T01（初期セットアップ）
 
 > **概要**: Next.js プロジェクト作成・開発環境構築・コーディング規約設定 / **依存**: なし
 
-- [ ] T01-1: Next.js 14 (App Router) + TypeScript プロジェクト作成
-- [ ] T01-2: 依存パッケージインストール（shadcn/ui, Tailwind CSS, TanStack Query v5, NextAuth.js v5, Prisma v5, Zod, Recharts）
-- [ ] T01-3: `.gitattributes`（LF統一）, `.env.example`, `.gitignore` 設定
-- [ ] T01-4: ESLint + Prettier 設定（Next.js 標準ルール）
-- [ ] T01-5: Vitest + Testing Library + MSW + Playwright テスト環境設定
-- [ ] T01-6: `package.json` npm スクリプト定義（`test`, `test:int`, `test:e2e`, `test:cov`, `lint`, `type-check`）
+- [x] T01-1: Next.js 14 (App Router) + TypeScript プロジェクト作成
+- [x] T01-2: 依存パッケージインストール（shadcn/ui, Tailwind CSS, TanStack Query v5, NextAuth.js v5, Prisma v5, Zod, Recharts）
+- [x] T01-3: `.gitattributes`（LF統一）, `.env.example`, `.gitignore` 設定
+- [x] T01-4: ESLint + Prettier 設定（Next.js 標準ルール）
+- [x] T01-5: Vitest + Testing Library + MSW + Playwright テスト環境設定
+- [x] T01-6: `package.json` npm スクリプト定義（`test`, `test:int`, `test:e2e`, `test:cov`, `lint`, `type-check`）
 
 ---
 
