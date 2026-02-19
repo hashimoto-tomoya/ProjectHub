@@ -42,6 +42,77 @@ Prettier によるフォーマット修正も合わせて実施する。
 npx prettier --write .
 ```
 
+## 4. ブランチ戦略
+
+### ブランチの種類
+
+| 種類 | 命名 | 役割 |
+|------|------|------|
+| `main` | `main` | 唯一の安定ブランチ。直接pushは禁止。CI全パス必須 |
+| `feature/TNN-*` | `feature/T07-project-management` | 1タスク1ブランチ。TDDサイクルをここで回す |
+| `milestone/phase-N` | `milestone/phase-1-foundation` | Phase統合検証が必要な場合のみ作成（任意） |
+
+### ブランチ命名規則
+
+```
+feature/T{タスク番号2桁}-{内容のkebab-case}
+例: feature/T01-initial-setup / feature/T07-project-management
+```
+
+### PRの粒度
+
+- **原則：1タスク（T01〜T14）= 1PR**
+- TDDの `[RED]`（テスト作成）と `[GREEN]`（実装）は**必ず同一PR**にまとめること
+- サブタスクが12個超の重量タスク（T04, T08, T12等）は論理単位で2分割可
+
+### マージ方式
+
+- **Squash Merge のみ**（Merge commit・Rebase は禁止）
+- Squashコミットメッセージ形式：`feat(T07): プロジェクト管理機能実装 (#PR番号)`
+
+### 並列ブランチ
+
+- 全てのfeatureブランチは **`main` から分岐**（互いから分岐しない）
+- 依存タスクがmainにマージされるまで、依存先ブランチはマージしない
+- 依存先マージ後は `git rebase main` で最新化してからマージ
+
+### マイルストーン（リリースタグ）
+
+| フェーズ | 完了タスク | タグ |
+|---------|-----------|------|
+| Phase 1: 基盤確立 | T01〜T06 | `v0.1.0` |
+| Phase 2: コア機能 | T07, T13 | `v0.2.0` |
+| Phase 3: 業務機能 | T08〜T11 | `v0.3.0` |
+| Phase 4: 完成 | T12, T14 | `v1.0.0` |
+
+### 作業標準手順
+
+```bash
+# 1. mainから分岐
+git switch main && git pull origin main
+git switch -c feature/T07-project-management
+
+# 2. TDD RED → GREEN → 品質チェック → push
+git commit -m "test(T07): ProjectService単体テスト [RED]"
+git commit -m "feat(T07): ProjectService実装 [GREEN]"
+npm run lint && npm run type-check
+git push -u origin feature/T07-project-management
+
+# 3. PR作成（draft → ready → Squash Merge）
+gh pr create --draft --title "WIP: feat(T07) プロジェクト管理機能"
+gh pr ready  # CI全パス確認後
+# GitHubのUIで「Squash and merge」を選択
+
+# 4. ブランチ削除（自動削除設定済みなら不要）
+git branch -d feature/T07-project-management
+```
+
+### GitHub リポジトリ設定（初回のみ）
+
+- Branch protection (main): 直接push禁止・CI全パス必須
+- Delete branch after merge: 有効化
+- マージ方式: Squash のみ許可（Merge commit・Rebase は無効化）
+
 ---
 
 # 本プロジェクトの設計ドキュメントについて
