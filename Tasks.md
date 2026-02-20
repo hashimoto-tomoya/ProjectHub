@@ -89,18 +89,18 @@ T01（初期セットアップ）
 
 > **概要**: 認証基盤・Prisma Client・型定義・ユーティリティ・ミドルウェア / **依存**: T01, T03 / **並列**: T05 と一部並列可能
 
-- [ ] T04-1: `lib/prisma/client.ts` 実装（Prisma Client シングルトン・開発環境 hot reload 対策）
-- [ ] T04-2: `lib/types/domain.ts` 定義（Role, ProjectStatus, TaskStatus, ReviewItemStatus, BugStatus, Severity, DashboardData, EvmDataPoint 等）
-- [ ] T04-3: `lib/types/api.ts` 定義（各 API リクエスト/レスポンス型）
-- [ ] T04-4: **[RED]** `tests/unit/utils/password.test.ts` 作成（TC-UT-016: ハッシュ化・検証・ポリシー違反テスト・失敗確認）
-- [ ] T04-5: **[GREEN]** `lib/utils/password.ts` 実装（bcrypt ハッシュ化・検証, コストファクター12）
-- [ ] T04-6: **[RED]** `tests/unit/utils/validation.test.ts` 作成（Zod スキーマ: パスワードポリシー・日付・各エンティティバリデーションテスト・失敗確認）
-- [ ] T04-7: **[GREEN]** `lib/utils/validation.ts` 実装（Zod スキーマ共通定義）
-- [ ] T04-8: **[RED]** `tests/unit/utils/error.test.ts` 作成（TC-UT-017〜020: カスタムエラークラス・`handleApiError` テスト・失敗確認）
-- [ ] T04-9: **[GREEN]** `lib/utils/error.ts` 実装（カスタムエラークラス・`handleApiError` 共通エラーハンドラ）
-- [ ] T04-10: NextAuth.js 設定（`app/api/auth/[...nextauth]/route.ts`）: Credentials Provider, セッション管理, `mustChangePassword` フラグ
-- [ ] T04-11: `lib/auth/session.ts` 実装（`requireAuth`, `requireRole`, `requireProjectMember` ヘルパー）
-- [ ] T04-12: `app/middleware.ts` 実装（ルートガード: 未認証リダイレクト・管理者チェック・パスワード変更強制）
+- [x] T04-1: `lib/prisma/client.ts` 実装（Prisma Client シングルトン・開発環境 hot reload 対策）
+- [x] T04-2: `lib/types/domain.ts` 定義（Role, ProjectStatus, TaskStatus, ReviewItemStatus, BugStatus, Severity, DashboardData, EvmDataPoint 等）
+- [x] T04-3: `lib/types/api.ts` 定義（各 API リクエスト/レスポンス型）
+- [x] T04-4: **[RED]** `tests/unit/utils/password.test.ts` 作成（TC-UT-016: ハッシュ化・検証・ポリシー違反テスト・失敗確認）
+- [x] T04-5: **[GREEN]** `lib/utils/password.ts` 実装（bcrypt ハッシュ化・検証, コストファクター12）
+- [x] T04-6: **[RED]** `tests/unit/utils/validation.test.ts` 作成（Zod スキーマ: パスワードポリシー・日付・各エンティティバリデーションテスト・失敗確認）
+- [x] T04-7: **[GREEN]** `lib/utils/validation.ts` 実装（Zod スキーマ共通定義）
+- [x] T04-8: **[RED]** `tests/unit/utils/error.test.ts` 作成（TC-UT-017〜020: カスタムエラークラス・`handleApiError` テスト・失敗確認）
+- [x] T04-9: **[GREEN]** `lib/utils/error.ts` 実装（カスタムエラークラス・`handleApiError` 共通エラーハンドラ）
+- [x] T04-10: NextAuth.js 設定（`app/api/auth/[...nextauth]/route.ts`）: Credentials Provider, セッション管理, `mustChangePassword` フラグ
+- [x] T04-11: `lib/auth/session.ts` 実装（`requireAuth`, `requireRole`, `requireProjectMember` ヘルパー）
+- [x] T04-12: `app/middleware.ts` 実装（ルートガード: 未認証リダイレクト・管理者チェック・パスワード変更強制）
 
 ---
 
