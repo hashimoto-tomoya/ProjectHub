@@ -99,19 +99,20 @@ async function main() {
   // ─────────────────────────────────────────
   console.log("📁 プロジェクトを作成中...");
 
-  const project = await prisma.project.upsert({
-    where: { id: BigInt(1) },
-    update: {},
-    create: {
-      name: "サンプルプロジェクト",
-      description: "開発・テスト用のサンプルプロジェクトです。",
-      startDate: new Date("2026-01-01"),
-      endDate: new Date("2026-12-31"),
-      status: "active",
-      bugSequence: 0,
-      createdBy: adminUser.id,
-    },
-  });
+  const PROJECT_NAME = "サンプルプロジェクト";
+  const project =
+    (await prisma.project.findFirst({ where: { name: PROJECT_NAME } })) ??
+    (await prisma.project.create({
+      data: {
+        name: PROJECT_NAME,
+        description: "開発・テスト用のサンプルプロジェクトです。",
+        startDate: new Date("2026-01-01"),
+        endDate: new Date("2026-12-31"),
+        status: "active",
+        bugSequence: 0,
+        createdBy: adminUser.id,
+      },
+    }));
 
   console.log(`  ✓ project: ${project.name} (id: ${project.id})`);
 
