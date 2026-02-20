@@ -55,6 +55,7 @@ erDiagram
 | 8 | TBL-008 | review_categories | 指摘区分マスタ | プロジェクト固有の指摘区分定義 |
 | 9 | TBL-009 | review_items | レビュー指摘事項 | 個別指摘内容・ステータス管理 |
 | 10 | TBL-010 | bugs | 障害管理票 | バグ・障害の登録・追跡 |
+| 11 | TBL-011 | audit_logs | 操作ログ | システム操作の監査ログ（非機能要件 NFR-SEC 対応） |
 
 ---
 
@@ -127,8 +128,9 @@ erDiagram
 | 1 | id | BIGINT | NO | 自動採番 | 主キー |
 | 2 | project_id | BIGINT | NO | — | プロジェクトID（FK: projects.id） |
 | 3 | user_id | BIGINT | NO | — | ユーザーID（FK: users.id） |
-| 4 | created_at | TIMESTAMP | NO | 現在時刻 | 作成日時 |
-| 5 | updated_at | TIMESTAMP | NO | 現在時刻 | 更新日時 |
+| 4 | is_favorite | BOOLEAN | NO | false | お気に入りフラグ（API設計書 `PUT /api/projects/[id]/favorite` 対応） |
+| 5 | created_at | TIMESTAMP | NO | 現在時刻 | 作成日時 |
+| 6 | updated_at | TIMESTAMP | NO | 現在時刻 | 更新日時 |
 
 **外部キー:**
 
@@ -388,6 +390,39 @@ erDiagram
 
 !!! note "ステータス遷移"
     未対応 → 調査中 → 修正中 → 確認待ち → クローズ（再発生時: 確認待ち → 修正中）
+
+---
+
+### 監査ログ
+
+#### audit_logs（TBL-011）
+
+| No | カラム名 | データ型 | NULL | デフォルト | 説明 |
+|----|---------|---------|------|-----------|------|
+| 1 | id | BIGINT | NO | 自動採番 | 主キー |
+| 2 | timestamp | TIMESTAMP | NO | 現在時刻 | 操作日時 |
+| 3 | user_id | BIGINT | YES | NULL | 操作者（FK: users.id）。システム操作時は NULL |
+| 4 | action | VARCHAR(50) | NO | — | 操作種別（CREATE / UPDATE / DELETE 等） |
+| 5 | resource_type | VARCHAR(50) | NO | — | 操作対象リソース種別（User / Project / Task 等） |
+| 6 | resource_id | BIGINT | YES | NULL | 操作対象リソースのID |
+| 7 | detail | TEXT | YES | NULL | 操作詳細（変更前後の値など） |
+
+**外部キー:**
+
+| カラム | 参照先 | ON DELETE | ON UPDATE |
+|--------|--------|-----------|-----------|
+| user_id | users(id) | SET NULL | CASCADE |
+
+**制約・インデックス:**
+
+| 種別 | カラム | 備考 |
+|------|--------|------|
+| INDEX | user_id | ユーザー別操作ログ検索用 |
+| INDEX | (resource_type, resource_id) | リソース別操作ログ検索用 |
+| INDEX | timestamp | 日時範囲検索用 |
+
+!!! note "設計方針"
+    システム操作の監査ログを記録する追加テーブル（非機能要件 NFR-SEC 対応）。物理削除不可・追記専用として運用する。
 
 ---
 

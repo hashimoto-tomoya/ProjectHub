@@ -75,13 +75,13 @@ T01（初期セットアップ）
 
 > **概要**: Prisma スキーマ定義・マイグレーション・シードデータ / **依存**: T01 / **並列**: T02 と同時進行可能
 
-- [ ] T03-1: `prisma/schema.prisma` 定義（全10テーブル: users, projects, project_members, tasks, daily_reports, daily_report_entries, review_sessions, review_categories, review_items, bugs）
-- [ ] T03-2: `project_members` テーブルに `is_favorite BOOLEAN DEFAULT false` カラム追加（API設計書の追記事項対応）
-- [ ] T03-3: `audit_logs` テーブル定義追加（操作ログ: id, timestamp, user_id, action, resource_type, resource_id, detail）
-- [ ] T03-4: インデックス定義（各テーブルの外部キー・検索用・集計用インデックス）
-- [ ] T03-5: 初回マイグレーション実行（`prisma migrate dev`）
-- [ ] T03-6: シードデータ作成（`prisma/seed.ts`）: テストユーザー・テストプロジェクト・指摘区分マスタ
-- [ ] T03-7: テスト用フィクスチャデータ作成（`tests/fixtures/`）: 各テストケース用データ
+- [x] T03-1: `prisma/schema.prisma` 定義（全10テーブル: users, projects, project_members, tasks, daily_reports, daily_report_entries, review_sessions, review_categories, review_items, bugs）
+- [x] T03-2: `project_members` テーブルに `is_favorite BOOLEAN DEFAULT false` カラム追加（API設計書の追記事項対応）
+- [x] T03-3: `audit_logs` テーブル定義追加（操作ログ: id, timestamp, user_id, action, resource_type, resource_id, detail）
+- [x] T03-4: インデックス定義（各テーブルの外部キー・検索用・集計用インデックス）
+- [x] T03-5: 初回マイグレーション実行（`prisma migrate dev`）
+- [x] T03-6: シードデータ作成（`prisma/seed.ts`）: テストユーザー・テストプロジェクト・指摘区分マスタ
+- [x] T03-7: テスト用フィクスチャデータ作成（`tests/fixtures/`）: 各テストケース用データ
 
 ---
 
