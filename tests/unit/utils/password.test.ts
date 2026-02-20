@@ -1,9 +1,5 @@
 import { describe, it, expect } from "vitest";
-import {
-  hashPassword,
-  verifyPassword,
-  validatePasswordPolicy,
-} from "@/lib/utils/password";
+import { hashPassword, verifyPassword, validatePasswordPolicy } from "@/lib/utils/password";
 
 describe("password utils", () => {
   describe("hashPassword", () => {
@@ -45,11 +41,11 @@ describe("password utils", () => {
       expect(validatePasswordPolicy("abc12345678")).toBe(true);
     });
 
-    it("TC-UT-017: 7文字（最小未満）はエラー", () => {
+    it("TC-UT-016: 7文字（最小未満）はエラー", () => {
       expect(validatePasswordPolicy("Abc1234")).toBe(false);
     });
 
-    it("TC-UT-018: 数字のみはエラー（英字必須）", () => {
+    it("TC-UT-016: 数字のみはエラー（英字必須）", () => {
       expect(validatePasswordPolicy("12345678")).toBe(false);
     });
 

@@ -192,18 +192,21 @@ export interface UpdateDailyReportRequest {
 export interface ReviewSessionResponse {
   id: number;
   projectId: number;
-  title: string;
-  reviewDate: string;
-  reviewedBy: string;
+  reviewType: string;
+  targetName: string;
+  sessionDate: string;
+  reviewerId: number;
+  reviewerName: string;
   totalItems: number;
   openItems: number;
   createdAt: string;
 }
 
 export interface CreateReviewSessionRequest {
-  title: string;
-  reviewDate: string;
-  reviewedBy: string;
+  reviewType: string;
+  targetName: string;
+  sessionDate: string;
+  reviewerId: number;
 }
 
 export interface ReviewItemResponse {

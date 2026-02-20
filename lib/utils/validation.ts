@@ -3,8 +3,14 @@ import { z } from "zod";
 // YYYY-MM-DD 形式の日付を検証する正規表現
 const DATE_PATTERN = /^\d{4}-\d{2}-\d{2}$/;
 
-// 日付文字列スキーマ
-const dateString = z.string().regex(DATE_PATTERN, "日付は YYYY-MM-DD 形式で入力してください");
+// 日付文字列スキーマ（形式チェック + 実在日付チェック）
+const dateString = z
+  .string()
+  .regex(DATE_PATTERN, "日付は YYYY-MM-DD 形式で入力してください")
+  .refine((v) => {
+    const d = new Date(v);
+    return !isNaN(d.getTime()) && d.toISOString().startsWith(v);
+  }, "存在しない日付です");
 
 // ============================================================
 // パスワード
@@ -105,9 +111,10 @@ export const updateDailyReportSchema = z.object({
 // ============================================================
 
 export const createReviewSessionSchema = z.object({
-  title: z.string().min(1, "タイトルを入力してください"),
-  reviewDate: dateString,
-  reviewedBy: z.string().min(1, "レビュー担当者を入力してください"),
+  reviewType: z.string().min(1, "レビュー種別を入力してください"),
+  targetName: z.string().min(1, "レビュー対象を入力してください"),
+  sessionDate: dateString,
+  reviewerId: z.number().int().positive(),
 });
 
 export const createReviewItemSchema = z.object({

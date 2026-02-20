@@ -46,7 +46,7 @@ describe("validation utils", () => {
 
     it("currentPasswordが空の場合はエラー", () => {
       expect(() =>
-        changePasswordSchema.parse({ currentPassword: "", newPassword: "NewPass2" }),
+        changePasswordSchema.parse({ currentPassword: "", newPassword: "NewPass2" })
       ).toThrow(ZodError);
     });
 
@@ -55,7 +55,7 @@ describe("validation utils", () => {
         changePasswordSchema.parse({
           currentPassword: "OldPass1",
           newPassword: "short",
-        }),
+        })
       ).toThrow(ZodError);
     });
   });
@@ -72,7 +72,7 @@ describe("validation utils", () => {
 
     it("nameが空の場合はエラー", () => {
       expect(() =>
-        createProjectSchema.parse({ name: "", startDate: "2026-01-01", pmId: 1 }),
+        createProjectSchema.parse({ name: "", startDate: "2026-01-01", pmId: 1 })
       ).toThrow(ZodError);
     });
 
@@ -82,7 +82,17 @@ describe("validation utils", () => {
           name: "テスト",
           startDate: "2026/01/01",
           pmId: 1,
-        }),
+        })
+      ).toThrow(ZodError);
+    });
+
+    it("startDateに存在しない日付（2026-13-99）はエラー", () => {
+      expect(() =>
+        createProjectSchema.parse({
+          name: "テスト",
+          startDate: "2026-13-99",
+          pmId: 1,
+        })
       ).toThrow(ZodError);
     });
   });
@@ -98,9 +108,7 @@ describe("validation utils", () => {
     });
 
     it("plannedHoursに負の値はエラー", () => {
-      expect(() =>
-        createTaskSchema.parse({ name: "タスク", plannedHours: -1 }),
-      ).toThrow(ZodError);
+      expect(() => createTaskSchema.parse({ name: "タスク", plannedHours: -1 })).toThrow(ZodError);
     });
   });
 
@@ -119,14 +127,14 @@ describe("validation utils", () => {
         createDailyReportSchema.parse({
           workDate: "2026/02/20",
           entries: [{ taskId: 1, workHours: 4 }],
-        }),
+        })
       ).toThrow(ZodError);
     });
 
     it("entriesが空配列の場合はエラー", () => {
-      expect(() =>
-        createDailyReportSchema.parse({ workDate: "2026-02-20", entries: [] }),
-      ).toThrow(ZodError);
+      expect(() => createDailyReportSchema.parse({ workDate: "2026-02-20", entries: [] })).toThrow(
+        ZodError
+      );
     });
 
     it("workHoursが0の場合はエラー", () => {
@@ -134,7 +142,7 @@ describe("validation utils", () => {
         createDailyReportSchema.parse({
           workDate: "2026-02-20",
           entries: [{ taskId: 1, workHours: 0 }],
-        }),
+        })
       ).toThrow(ZodError);
     });
   });
@@ -151,7 +159,7 @@ describe("validation utils", () => {
 
     it("titleが空の場合はエラー", () => {
       expect(() =>
-        createBugSchema.parse({ title: "", severity: "高", foundDate: "2026-02-20" }),
+        createBugSchema.parse({ title: "", severity: "高", foundDate: "2026-02-20" })
       ).toThrow(ZodError);
     });
 
@@ -161,7 +169,7 @@ describe("validation utils", () => {
           title: "障害",
           severity: "超高",
           foundDate: "2026-02-20",
-        }),
+        })
       ).toThrow(ZodError);
     });
   });
@@ -184,7 +192,7 @@ describe("validation utils", () => {
           email: "not-an-email",
           role: "developer",
           initialPassword: "Init1234",
-        }),
+        })
       ).toThrow(ZodError);
     });
 
@@ -195,7 +203,7 @@ describe("validation utils", () => {
           email: "test@example.com",
           role: "superadmin",
           initialPassword: "Init1234",
-        }),
+        })
       ).toThrow(ZodError);
     });
   });
