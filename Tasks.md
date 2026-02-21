@@ -129,14 +129,14 @@ T01（初期セットアップ）
 
 > **概要**: ログイン画面・パスワード管理・AuthService / **依存**: T04, T05
 
-- [ ] T06-1: **[RED]** `tests/unit/services/auth.service.test.ts` 作成（パスワード変更・初回ログイン検証・パスワード履歴3世代チェックテスト・失敗確認）
-- [ ] T06-2: **[GREEN]** UserRepository 実装（`lib/repositories/user.repository.ts`）: findByEmail, findById, create, update（論理削除対応）
-- [ ] T06-3: **[GREEN]** AuthService 実装（`lib/services/auth.service.ts`）: パスワード変更・初回ログイン検証・パスワード履歴3世代管理（T06-1テストをパス）
-- [ ] T06-4: **[RED]** `tests/unit/components/features/login-form.test.tsx` 作成（フォーム入力・バリデーション・エラー表示・ログイン送信テスト・失敗確認）
-- [ ] T06-5: **[GREEN]** ログイン画面（`app/(auth)/login/page.tsx`）: メールアドレス・パスワード入力・エラー表示（T06-4テストをパス）
-- [ ] T06-6: **[RED]** `tests/unit/components/features/change-password-form.test.tsx` 作成（現PW確認・新PW入力・ポリシー違反・成功テスト・失敗確認）
-- [ ] T06-7: **[GREEN]** パスワード変更画面（`app/(main)/users/me/change-password/page.tsx`）: 現パスワード確認・新パスワード入力（T06-6テストをパス）
-- [ ] T06-8: パスワード変更 API 実装（`PUT /api/users/me/password`）: バリデーション・現パスワード確認・ハッシュ更新
+- [x] T06-1: **[RED]** `tests/unit/services/auth.service.test.ts` 作成（パスワード変更・初回ログイン検証・パスワード履歴3世代チェックテスト・失敗確認）
+- [x] T06-2: **[GREEN]** UserRepository 実装（`lib/repositories/user.repository.ts`）: findByEmail, findById, create, update（論理削除対応）
+- [x] T06-3: **[GREEN]** AuthService 実装（`lib/services/auth.service.ts`）: パスワード変更・初回ログイン検証・パスワード履歴3世代管理（T06-1テストをパス）
+- [x] T06-4: **[RED]** `tests/unit/components/features/login-form.test.tsx` 作成（フォーム入力・バリデーション・エラー表示・ログイン送信テスト・失敗確認）
+- [x] T06-5: **[GREEN]** ログイン画面（`app/(auth)/login/page.tsx`）: メールアドレス・パスワード入力・エラー表示（T06-4テストをパス）
+- [x] T06-6: **[RED]** `tests/unit/components/features/change-password-form.test.tsx` 作成（現PW確認・新PW入力・ポリシー違反・成功テスト・失敗確認）
+- [x] T06-7: **[GREEN]** パスワード変更画面（`app/(main)/users/me/change-password/page.tsx`）: 現パスワード確認・新パスワード入力（T06-6テストをパス）
+- [x] T06-8: パスワード変更 API 実装（`PUT /api/users/me/password`）: バリデーション・現パスワード確認・ハッシュ更新
 
 ---
 
