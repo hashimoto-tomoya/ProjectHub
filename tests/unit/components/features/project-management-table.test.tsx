@@ -17,6 +17,7 @@ const sampleProjects: ProjectListItem[] = [
     status: "active",
     startDate: "2026-01-01",
     endDate: "2026-12-31",
+    description: "プロジェクトAの説明",
     pmName: "PM テスト",
     isFavorite: false,
   },
@@ -26,6 +27,7 @@ const sampleProjects: ProjectListItem[] = [
     status: "active",
     startDate: "2026-02-01",
     endDate: null,
+    description: null,
     pmName: "別PM テスト",
     isFavorite: false,
   },
@@ -35,6 +37,7 @@ const sampleProjects: ProjectListItem[] = [
     status: "archived",
     startDate: "2025-01-01",
     endDate: "2025-12-31",
+    description: null,
     pmName: "PM テスト",
     isFavorite: false,
   },
@@ -120,13 +123,7 @@ describe("ProjectManagementTable", () => {
   });
 
   it("空のプロジェクト一覧の場合は適切なメッセージが表示される", () => {
-    render(
-      <ProjectManagementTable
-        projects={[]}
-        onEdit={mockOnEdit}
-        onArchive={mockOnArchive}
-      />
-    );
+    render(<ProjectManagementTable projects={[]} onEdit={mockOnEdit} onArchive={mockOnArchive} />);
 
     expect(screen.getByText(/プロジェクトが見つかりません/i)).toBeInTheDocument();
   });

@@ -1,11 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Star, StarOff, ChevronRight, Search, FolderOpen } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
+import { ProjectStatusBadge } from "@/components/features/project-status-badge";
 import type { ProjectListItem } from "@/lib/types/api";
 
 interface ProjectListTableProps {
@@ -93,6 +93,11 @@ interface ProjectRowProps {
 function ProjectRow({ project, onFavoriteToggle, onRowClick }: ProjectRowProps) {
   const [optimisticFavorite, setOptimisticFavorite] = useState(project.isFavorite);
 
+  // invalidateQueries 後にサーバーから最新データが返ったとき、ローカル state を同期する
+  useEffect(() => {
+    setOptimisticFavorite(project.isFavorite);
+  }, [project.isFavorite]);
+
   const handleFavoriteClick = (e: React.MouseEvent) => {
     e.stopPropagation();
     const next = !optimisticFavorite;
@@ -101,10 +106,7 @@ function ProjectRow({ project, onFavoriteToggle, onRowClick }: ProjectRowProps) 
   };
 
   return (
-    <tr
-      className="cursor-pointer transition-colors hover:bg-muted/40"
-      onClick={onRowClick}
-    >
+    <tr className="cursor-pointer transition-colors hover:bg-muted/40" onClick={onRowClick}>
       {/* お気に入りトグル */}
       <td className="px-3 py-3 text-center">
         <Button
@@ -128,18 +130,14 @@ function ProjectRow({ project, onFavoriteToggle, onRowClick }: ProjectRowProps) 
       </td>
 
       {/* PM名 */}
-      <td className="hidden px-4 py-3 text-muted-foreground md:table-cell">
-        {project.pmName}
-      </td>
+      <td className="hidden px-4 py-3 text-muted-foreground md:table-cell">{project.pmName}</td>
 
       {/* 開始日 */}
-      <td className="hidden px-4 py-3 text-muted-foreground lg:table-cell">
-        {project.startDate}
-      </td>
+      <td className="hidden px-4 py-3 text-muted-foreground lg:table-cell">{project.startDate}</td>
 
       {/* ステータス */}
       <td className="px-4 py-3">
-        <StatusBadge status={project.status} />
+        <ProjectStatusBadge status={project.status} />
       </td>
 
       {/* 矢印ボタン */}
@@ -147,23 +145,5 @@ function ProjectRow({ project, onFavoriteToggle, onRowClick }: ProjectRowProps) 
         <ChevronRight className="inline-block h-4 w-4 text-muted-foreground" />
       </td>
     </tr>
-  );
-}
-
-function StatusBadge({ status }: { status: string }) {
-  if (status === "active") {
-    return (
-      <Badge
-        variant="outline"
-        className="border-emerald-200 bg-emerald-50 text-emerald-700 dark:border-emerald-800 dark:bg-emerald-950 dark:text-emerald-300"
-      >
-        進行中
-      </Badge>
-    );
-  }
-  return (
-    <Badge variant="secondary" className="text-muted-foreground">
-      アーカイブ
-    </Badge>
   );
 }

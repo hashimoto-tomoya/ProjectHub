@@ -49,6 +49,7 @@ export interface ProjectListItem {
   status: ProjectStatus;
   startDate: string;
   endDate: string | null;
+  description: string | null;
   pmName: string;
   isFavorite: boolean;
 }

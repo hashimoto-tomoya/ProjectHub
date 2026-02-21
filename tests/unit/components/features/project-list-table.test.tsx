@@ -30,6 +30,7 @@ const sampleProjects: ProjectListItem[] = [
     status: "active",
     startDate: "2026-01-01",
     endDate: "2026-12-31",
+    description: "プロジェクトAの説明",
     pmName: "PM テスト",
     isFavorite: true,
   },
@@ -39,6 +40,7 @@ const sampleProjects: ProjectListItem[] = [
     status: "active",
     startDate: "2026-02-01",
     endDate: null,
+    description: null,
     pmName: "別PM テスト",
     isFavorite: false,
   },
@@ -48,6 +50,7 @@ const sampleProjects: ProjectListItem[] = [
     status: "archived",
     startDate: "2025-01-01",
     endDate: "2025-12-31",
+    description: null,
     pmName: "PM テスト",
     isFavorite: false,
   },
@@ -61,12 +64,7 @@ describe("ProjectListTable", () => {
   });
 
   it("プロジェクト一覧が表示される", () => {
-    render(
-      <ProjectListTable
-        projects={sampleProjects}
-        onFavoriteToggle={mockOnFavoriteToggle}
-      />
-    );
+    render(<ProjectListTable projects={sampleProjects} onFavoriteToggle={mockOnFavoriteToggle} />);
 
     expect(screen.getByText("プロジェクトA")).toBeInTheDocument();
     expect(screen.getByText("プロジェクトB")).toBeInTheDocument();
@@ -74,24 +72,14 @@ describe("ProjectListTable", () => {
   });
 
   it("PM名が表示される", () => {
-    render(
-      <ProjectListTable
-        projects={sampleProjects}
-        onFavoriteToggle={mockOnFavoriteToggle}
-      />
-    );
+    render(<ProjectListTable projects={sampleProjects} onFavoriteToggle={mockOnFavoriteToggle} />);
 
     expect(screen.getAllByText("PM テスト")).toHaveLength(2);
     expect(screen.getByText("別PM テスト")).toBeInTheDocument();
   });
 
   it("プロジェクト名で検索フィルタが動作する", async () => {
-    render(
-      <ProjectListTable
-        projects={sampleProjects}
-        onFavoriteToggle={mockOnFavoriteToggle}
-      />
-    );
+    render(<ProjectListTable projects={sampleProjects} onFavoriteToggle={mockOnFavoriteToggle} />);
 
     const searchInput = screen.getByPlaceholderText(/検索/i);
     await userEvent.type(searchInput, "プロジェクトA");
@@ -101,12 +89,7 @@ describe("ProjectListTable", () => {
   });
 
   it("お気に入りボタンクリックで onFavoriteToggle が呼ばれる", async () => {
-    render(
-      <ProjectListTable
-        projects={sampleProjects}
-        onFavoriteToggle={mockOnFavoriteToggle}
-      />
-    );
+    render(<ProjectListTable projects={sampleProjects} onFavoriteToggle={mockOnFavoriteToggle} />);
 
     // お気に入りボタン（プロジェクトBの☆ボタン）をクリック
     const favoriteButtons = screen.getAllByRole("button", { name: /お気に入り/i });
@@ -116,12 +99,7 @@ describe("ProjectListTable", () => {
   });
 
   it("お気に入り登録済みプロジェクトは filled star アイコンで表示される", () => {
-    render(
-      <ProjectListTable
-        projects={sampleProjects}
-        onFavoriteToggle={mockOnFavoriteToggle}
-      />
-    );
+    render(<ProjectListTable projects={sampleProjects} onFavoriteToggle={mockOnFavoriteToggle} />);
 
     // isFavorite: true のプロジェクトAは filled star
     const favoriteButtons = screen.getAllByRole("button", { name: /お気に入り/i });
@@ -130,12 +108,7 @@ describe("ProjectListTable", () => {
   });
 
   it("プロジェクト行をクリックするとダッシュボードに遷移する", async () => {
-    render(
-      <ProjectListTable
-        projects={sampleProjects}
-        onFavoriteToggle={mockOnFavoriteToggle}
-      />
-    );
+    render(<ProjectListTable projects={sampleProjects} onFavoriteToggle={mockOnFavoriteToggle} />);
 
     await userEvent.click(screen.getByText("プロジェクトA"));
 
@@ -143,12 +116,7 @@ describe("ProjectListTable", () => {
   });
 
   it("空のプロジェクト一覧の場合は適切なメッセージが表示される", () => {
-    render(
-      <ProjectListTable
-        projects={[]}
-        onFavoriteToggle={mockOnFavoriteToggle}
-      />
-    );
+    render(<ProjectListTable projects={[]} onFavoriteToggle={mockOnFavoriteToggle} />);
 
     expect(screen.getByText(/プロジェクトが見つかりません/i)).toBeInTheDocument();
   });

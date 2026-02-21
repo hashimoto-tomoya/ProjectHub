@@ -45,6 +45,7 @@ export class ProjectService {
       status: p.status as ProjectStatus,
       startDate: p.startDate.toISOString().slice(0, 10),
       endDate: p.endDate ? p.endDate.toISOString().slice(0, 10) : null,
+      description: p.description,
       pmName: p.pmName ?? "",
       isFavorite: p.isFavorite,
     }));
@@ -81,25 +82,20 @@ export class ProjectService {
    * - 指摘区分マスタを自動生成
    */
   async createProject(userId: bigint, input: CreateProjectRequest): Promise<ProjectDetail> {
-    const project = await this.projectRepository.create({
-      name: input.name,
-      startDate: new Date(input.startDate),
-      endDate: input.endDate ? new Date(input.endDate) : null,
-      description: input.description ?? null,
-      creator: { connect: { id: userId } },
-    });
-
-    // PM をメンバーに追加
     const pmId = BigInt(input.pmId);
-    await this.projectRepository.addMember(project.id, pmId);
+    const memberIds = userId !== pmId ? [pmId, userId] : [pmId];
 
-    // 作成者が PM と異なる場合は作成者もメンバーに追加
-    if (userId !== pmId) {
-      await this.projectRepository.addMember(project.id, userId);
-    }
-
-    // 指摘区分マスタを自動生成
-    await this.projectRepository.createReviewCategories(project.id, DEFAULT_REVIEW_CATEGORIES);
+    const project = await this.projectRepository.createFull(
+      {
+        name: input.name,
+        startDate: new Date(input.startDate),
+        endDate: input.endDate ? new Date(input.endDate) : null,
+        description: input.description ?? null,
+        creator: { connect: { id: userId } },
+      },
+      memberIds,
+      DEFAULT_REVIEW_CATEGORIES
+    );
 
     return this.getProjectById(project.id);
   }
@@ -117,7 +113,8 @@ export class ProjectService {
       name: input.name,
       status: input.status,
       startDate: input.startDate ? new Date(input.startDate) : undefined,
-      endDate: input.endDate !== undefined ? (input.endDate ? new Date(input.endDate) : null) : undefined,
+      endDate:
+        input.endDate !== undefined ? (input.endDate ? new Date(input.endDate) : null) : undefined,
       description: input.description !== undefined ? input.description : undefined,
     });
 

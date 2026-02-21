@@ -37,6 +37,8 @@ export const changePasswordSchema = z.object({
 // プロジェクト
 // ============================================================
 
+export const projectStatusQuerySchema = z.enum(["active", "archived", "all"]).default("active");
+
 export const createProjectSchema = z.object({
   name: z.string().min(1, "プロジェクト名を入力してください"),
   startDate: dateString,

@@ -1,9 +1,9 @@
 import { NextResponse } from "next/server";
 import { requireAuth, requireRole } from "@/lib/auth/session";
 import { projectService } from "@/lib/services/project.service";
-import { createProjectSchema } from "@/lib/utils/validation";
+import { createProjectSchema, projectStatusQuerySchema } from "@/lib/utils/validation";
 import { handleApiError } from "@/lib/utils/error";
-import type { Role, ProjectStatus } from "@/lib/types/domain";
+import type { Role } from "@/lib/types/domain";
 
 /**
  * API-C-002: プロジェクト一覧取得
@@ -13,7 +13,7 @@ export async function GET(req: Request) {
   try {
     const session = await requireAuth();
     const { searchParams } = new URL(req.url);
-    const status = (searchParams.get("status") ?? "active") as ProjectStatus | "all";
+    const status = projectStatusQuerySchema.parse(searchParams.get("status") ?? undefined);
 
     const projects = await projectService.getProjects(
       BigInt(session.user.id),

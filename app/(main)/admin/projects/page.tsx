@@ -164,7 +164,7 @@ export default function ProjectManagementPage() {
       pmId: "",
       startDate: project.startDate,
       endDate: project.endDate ?? "",
-      description: "",
+      description: project.description ?? "",
     });
     setFormError(null);
     setIsFormOpen(true);

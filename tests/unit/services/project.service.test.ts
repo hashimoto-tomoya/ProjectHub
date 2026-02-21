@@ -1,13 +1,14 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { ProjectService } from "@/lib/services/project.service";
 import type { ProjectRepository } from "@/lib/repositories/project.repository";
-import { NotFoundError, ConflictError, ForbiddenError } from "@/lib/utils/error";
+import { NotFoundError, ConflictError } from "@/lib/utils/error";
 
 // ProjectRepository のモック
 const mockProjectRepository: ProjectRepository = {
   findAll: vi.fn(),
   findById: vi.fn(),
   create: vi.fn(),
+  createFull: vi.fn(),
   update: vi.fn(),
   findMembers: vi.fn(),
   addMember: vi.fn(),
@@ -38,11 +39,7 @@ describe("ProjectService", () => {
         projectService.toggleFavorite(BigInt(1), BigInt(1), true)
       ).resolves.toBeUndefined();
 
-      expect(mockProjectRepository.toggleFavorite).toHaveBeenCalledWith(
-        BigInt(1),
-        BigInt(1),
-        true
-      );
+      expect(mockProjectRepository.toggleFavorite).toHaveBeenCalledWith(BigInt(1), BigInt(1), true);
     });
 
     it("メンバーはお気に入りを false に設定できる", async () => {
@@ -63,9 +60,9 @@ describe("ProjectService", () => {
     it("メンバー外ユーザーがお気に入り操作をすると NotFoundError", async () => {
       vi.mocked(mockProjectRepository.isMember).mockResolvedValue(false);
 
-      await expect(
-        projectService.toggleFavorite(BigInt(1), BigInt(99), true)
-      ).rejects.toThrow(NotFoundError);
+      await expect(projectService.toggleFavorite(BigInt(1), BigInt(99), true)).rejects.toThrow(
+        NotFoundError
+      );
 
       expect(mockProjectRepository.toggleFavorite).not.toHaveBeenCalled();
     });
@@ -79,9 +76,7 @@ describe("ProjectService", () => {
     it("既存メンバーを重複追加すると ConflictError", async () => {
       vi.mocked(mockProjectRepository.isMember).mockResolvedValue(true);
 
-      await expect(
-        projectService.addMember(BigInt(1), BigInt(5))
-      ).rejects.toThrow(ConflictError);
+      await expect(projectService.addMember(BigInt(1), BigInt(5))).rejects.toThrow(ConflictError);
 
       expect(mockProjectRepository.addMember).not.toHaveBeenCalled();
     });
@@ -90,9 +85,7 @@ describe("ProjectService", () => {
       vi.mocked(mockProjectRepository.isMember).mockResolvedValue(false);
       vi.mocked(mockProjectRepository.addMember).mockResolvedValue(undefined);
 
-      await expect(
-        projectService.addMember(BigInt(1), BigInt(5))
-      ).resolves.toBeUndefined();
+      await expect(projectService.addMember(BigInt(1), BigInt(5))).resolves.toBeUndefined();
 
       expect(mockProjectRepository.addMember).toHaveBeenCalledWith(BigInt(1), BigInt(5));
     });
@@ -103,9 +96,7 @@ describe("ProjectService", () => {
       vi.mocked(mockProjectRepository.isMember).mockResolvedValue(true);
       vi.mocked(mockProjectRepository.removeMember).mockResolvedValue(undefined);
 
-      await expect(
-        projectService.removeMember(BigInt(1), BigInt(5))
-      ).resolves.toBeUndefined();
+      await expect(projectService.removeMember(BigInt(1), BigInt(5))).resolves.toBeUndefined();
 
       expect(mockProjectRepository.removeMember).toHaveBeenCalledWith(BigInt(1), BigInt(5));
     });
@@ -113,9 +104,9 @@ describe("ProjectService", () => {
     it("メンバー外ユーザーを削除しようとすると NotFoundError", async () => {
       vi.mocked(mockProjectRepository.isMember).mockResolvedValue(false);
 
-      await expect(
-        projectService.removeMember(BigInt(1), BigInt(99))
-      ).rejects.toThrow(NotFoundError);
+      await expect(projectService.removeMember(BigInt(1), BigInt(99))).rejects.toThrow(
+        NotFoundError
+      );
 
       expect(mockProjectRepository.removeMember).not.toHaveBeenCalled();
     });
@@ -146,10 +137,8 @@ describe("ProjectService", () => {
       isFavorite: false,
     };
 
-    it("プロジェクト作成時に5つの指摘区分が自動生成される", async () => {
-      vi.mocked(mockProjectRepository.create).mockResolvedValue(mockCreatedProject);
-      vi.mocked(mockProjectRepository.addMember).mockResolvedValue(undefined);
-      vi.mocked(mockProjectRepository.createReviewCategories).mockResolvedValue(undefined);
+    it("プロジェクト作成時に5つの指摘区分が自動生成される（createFull でトランザクション実行）", async () => {
+      vi.mocked(mockProjectRepository.createFull).mockResolvedValue(mockCreatedProject);
       vi.mocked(mockProjectRepository.findById).mockResolvedValue(mockProjectWithPm);
 
       await projectService.createProject(BigInt(1), {
@@ -158,8 +147,9 @@ describe("ProjectService", () => {
         pmId: 1,
       });
 
-      expect(mockProjectRepository.createReviewCategories).toHaveBeenCalledWith(
-        BigInt(1),
+      expect(mockProjectRepository.createFull).toHaveBeenCalledWith(
+        expect.anything(),
+        expect.any(Array),
         expect.arrayContaining([
           expect.objectContaining({ name: "設計漏れ", sortOrder: 1 }),
           expect.objectContaining({ name: "実装誤り", sortOrder: 2 }),
@@ -171,9 +161,7 @@ describe("ProjectService", () => {
     });
 
     it("プロジェクト作成時に pmId ユーザーがメンバーに追加される", async () => {
-      vi.mocked(mockProjectRepository.create).mockResolvedValue(mockCreatedProject);
-      vi.mocked(mockProjectRepository.addMember).mockResolvedValue(undefined);
-      vi.mocked(mockProjectRepository.createReviewCategories).mockResolvedValue(undefined);
+      vi.mocked(mockProjectRepository.createFull).mockResolvedValue(mockCreatedProject);
       vi.mocked(mockProjectRepository.findById).mockResolvedValue(mockProjectWithPm);
 
       await projectService.createProject(BigInt(1), {
@@ -182,13 +170,15 @@ describe("ProjectService", () => {
         pmId: 5,
       });
 
-      expect(mockProjectRepository.addMember).toHaveBeenCalledWith(BigInt(1), BigInt(5));
+      expect(mockProjectRepository.createFull).toHaveBeenCalledWith(
+        expect.anything(),
+        expect.arrayContaining([BigInt(5)]),
+        expect.any(Array)
+      );
     });
 
     it("作成者(userId)が pmId と異なる場合、作成者もメンバーに追加される", async () => {
-      vi.mocked(mockProjectRepository.create).mockResolvedValue(mockCreatedProject);
-      vi.mocked(mockProjectRepository.addMember).mockResolvedValue(undefined);
-      vi.mocked(mockProjectRepository.createReviewCategories).mockResolvedValue(undefined);
+      vi.mocked(mockProjectRepository.createFull).mockResolvedValue(mockCreatedProject);
       vi.mocked(mockProjectRepository.findById).mockResolvedValue(mockProjectWithPm);
 
       await projectService.createProject(BigInt(10), {
@@ -198,8 +188,11 @@ describe("ProjectService", () => {
       });
 
       // pmId(5) と creator(10) の両方が追加される
-      expect(mockProjectRepository.addMember).toHaveBeenCalledWith(BigInt(1), BigInt(5));
-      expect(mockProjectRepository.addMember).toHaveBeenCalledWith(BigInt(1), BigInt(10));
+      expect(mockProjectRepository.createFull).toHaveBeenCalledWith(
+        expect.anything(),
+        expect.arrayContaining([BigInt(5), BigInt(10)]),
+        expect.any(Array)
+      );
     });
   });
 

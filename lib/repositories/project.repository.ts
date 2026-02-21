@@ -38,6 +38,12 @@ export interface ProjectRepository {
   findAll(criteria: ProjectCriteria, currentUserId?: bigint): Promise<ProjectWithPm[]>;
   findById(id: bigint): Promise<ProjectWithPm | null>;
   create(data: Prisma.ProjectCreateInput): Promise<Project>;
+  /** プロジェクト作成・メンバー追加・指摘区分生成をトランザクションで一括実行 */
+  createFull(
+    data: Prisma.ProjectCreateInput,
+    memberIds: bigint[],
+    categories: ReviewCategoryInput[]
+  ): Promise<Project>;
   update(id: bigint, data: Prisma.ProjectUpdateInput): Promise<Project>;
   findMembers(projectId: bigint): Promise<MemberWithUser[]>;
   addMember(projectId: bigint, userId: bigint): Promise<void>;
@@ -97,8 +103,7 @@ export class PrismaProjectRepository implements ProjectRepository {
       return {
         ...project,
         pmId: pmMember?.userId ?? creatorMember?.userId ?? null,
-        pmName:
-          pmMember?.user.name ?? creatorMember?.user.name ?? null,
+        pmName: pmMember?.user.name ?? creatorMember?.user.name ?? null,
         isFavorite: currentMember?.isFavorite ?? false,
       };
     });
@@ -139,6 +144,30 @@ export class PrismaProjectRepository implements ProjectRepository {
 
   async create(data: Prisma.ProjectCreateInput): Promise<Project> {
     return prisma.project.create({ data });
+  }
+
+  async createFull(
+    data: Prisma.ProjectCreateInput,
+    memberIds: bigint[],
+    categories: ReviewCategoryInput[]
+  ): Promise<Project> {
+    return prisma.$transaction(async (tx) => {
+      const project = await tx.project.create({ data });
+
+      await tx.projectMember.createMany({
+        data: memberIds.map((userId) => ({ projectId: project.id, userId })),
+      });
+
+      await tx.reviewCategory.createMany({
+        data: categories.map((c) => ({
+          projectId: project.id,
+          name: c.name,
+          sortOrder: c.sortOrder,
+        })),
+      });
+
+      return project;
+    });
   }
 
   async update(id: bigint, data: Prisma.ProjectUpdateInput): Promise<Project> {

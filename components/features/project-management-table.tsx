@@ -2,7 +2,7 @@
 
 import { Archive, Pencil, FolderOpen } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
+import { ProjectStatusBadge } from "@/components/features/project-status-badge";
 import type { ProjectListItem } from "@/lib/types/api";
 
 interface ProjectManagementTableProps {
@@ -76,17 +76,13 @@ export function ProjectManagementTable({
 
                 {/* ステータス */}
                 <td className="px-4 py-3">
-                  <StatusBadge status={project.status} />
+                  <ProjectStatusBadge status={project.status} />
                 </td>
 
                 {/* 操作ボタン */}
                 <td className="px-4 py-3 text-right">
                   <div className="flex items-center justify-end gap-2">
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => onEdit(project)}
-                    >
+                    <Button variant="outline" size="sm" onClick={() => onEdit(project)}>
                       <Pencil className="mr-1.5 h-3.5 w-3.5" />
                       編集
                     </Button>
@@ -109,23 +105,5 @@ export function ProjectManagementTable({
         </tbody>
       </table>
     </div>
-  );
-}
-
-function StatusBadge({ status }: { status: string }) {
-  if (status === "active") {
-    return (
-      <Badge
-        variant="outline"
-        className="border-emerald-200 bg-emerald-50 text-emerald-700 dark:border-emerald-800 dark:bg-emerald-950 dark:text-emerald-300"
-      >
-        進行中
-      </Badge>
-    );
-  }
-  return (
-    <Badge variant="secondary" className="text-muted-foreground">
-      アーカイブ
-    </Badge>
   );
 }
