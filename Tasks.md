@@ -144,19 +144,19 @@ T01（初期セットアップ）
 
 > **概要**: プロジェクトCRUD・メンバー管理・お気に入り / **依存**: T04, T05, T06 / **並列**: T13 と同時進行可能
 
-- [ ] T07-1: **[RED]** `tests/unit/services/project.service.test.ts` 作成（お気に入り管理・メンバー管理・指摘区分自動生成テスト・失敗確認）
-- [ ] T07-2: **[GREEN]** ProjectRepository 実装（`lib/repositories/project.repository.ts`）: CRUD・メンバー管理・お気に入りフラグ
-- [ ] T07-3: **[GREEN]** ProjectService 実装（`lib/services/project.service.ts`）: プロジェクトCRUD・お気に入り管理・メンバー管理・指摘区分自動生成（T07-1テストをパス）
-- [ ] T07-4: プロジェクト一覧 API（`GET/POST /api/projects`）: ロール別フィルタ・ステータスフィルタ
-- [ ] T07-5: プロジェクト詳細・更新 API（`GET/PUT /api/projects/[id]`）
-- [ ] T07-6: お気に入り API（`PUT /api/projects/[id]/favorite`）
-- [ ] T07-7: メンバー管理 API（`GET/POST /api/projects/[id]/members`, `DELETE /api/projects/[id]/members/[userId]`）
-- [ ] T07-8: **[RED]** `tests/unit/components/features/project-list-table.test.tsx` 作成（一覧表示・検索・フィルタ・お気に入りトグルテスト・失敗確認）
-- [ ] T07-9: **[GREEN]** `components/features/project-list-table.tsx` (ProjectListTable): 検索・フィルタ・お気に入りトグル・楽観的更新（T07-8テストをパス）
-- [ ] T07-10: プロジェクト一覧画面（`app/(main)/projects/page.tsx`）: TanStack Query キャッシュ設定（staleTime: 30秒）
-- [ ] T07-11: **[RED]** `tests/unit/components/features/project-management-table.test.tsx` 作成（一覧表示・アーカイブ操作テスト・失敗確認）
-- [ ] T07-12: **[GREEN]** `components/features/project-management-table.tsx` (ProjectManagementTable): 管理者用テーブル・アーカイブ操作（T07-11テストをパス）
-- [ ] T07-13: プロジェクト管理画面（`app/(main)/admin/projects/page.tsx`）: 登録・編集・アーカイブ
+- [x] T07-1: **[RED]** `tests/unit/services/project.service.test.ts` 作成（お気に入り管理・メンバー管理・指摘区分自動生成テスト・失敗確認）
+- [x] T07-2: **[GREEN]** ProjectRepository 実装（`lib/repositories/project.repository.ts`）: CRUD・メンバー管理・お気に入りフラグ
+- [x] T07-3: **[GREEN]** ProjectService 実装（`lib/services/project.service.ts`）: プロジェクトCRUD・お気に入り管理・メンバー管理・指摘区分自動生成（T07-1テストをパス）
+- [x] T07-4: プロジェクト一覧 API（`GET/POST /api/projects`）: ロール別フィルタ・ステータスフィルタ
+- [x] T07-5: プロジェクト詳細・更新 API（`GET/PUT /api/projects/[id]`）
+- [x] T07-6: お気に入り API（`PUT /api/projects/[id]/favorite`）
+- [x] T07-7: メンバー管理 API（`GET/POST /api/projects/[id]/members`, `DELETE /api/projects/[id]/members/[userId]`）
+- [x] T07-8: **[RED]** `tests/unit/components/features/project-list-table.test.tsx` 作成（一覧表示・検索・フィルタ・お気に入りトグルテスト・失敗確認）
+- [x] T07-9: **[GREEN]** `components/features/project-list-table.tsx` (ProjectListTable): 検索・フィルタ・お気に入りトグル・楽観的更新（T07-8テストをパス）
+- [x] T07-10: プロジェクト一覧画面（`app/(main)/projects/page.tsx`）: TanStack Query キャッシュ設定（staleTime: 30秒）
+- [x] T07-11: **[RED]** `tests/unit/components/features/project-management-table.test.tsx` 作成（一覧表示・アーカイブ操作テスト・失敗確認）
+- [x] T07-12: **[GREEN]** `components/features/project-management-table.tsx` (ProjectManagementTable): 管理者用テーブル・アーカイブ操作（T07-11テストをパス）
+- [x] T07-13: プロジェクト管理画面（`app/(main)/admin/projects/page.tsx`）: 登録・編集・アーカイブ
 
 ---
 
