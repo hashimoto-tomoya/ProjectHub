@@ -21,6 +21,7 @@ model User {
   role         String    @db.VarChar(20) // admin / pmo / pm / developer
   isActive           Boolean   @default(true) @map("is_active")
   mustChangePassword Boolean   @default(false) @map("must_change_password")
+  passwordHistory    String[]  @default([]) @map("password_history")
   createdAt          DateTime  @default(now()) @map("created_at")
   updatedAt    DateTime  @updatedAt @map("updated_at")
   deletedAt    DateTime? @map("deleted_at")
