@@ -21,7 +21,7 @@
 |----|----------------|------------|------|
 | CMP-LAYOUT-001 | AuthLayout | `app/(auth)/layout.tsx` | ログイン画面用レイアウト（センタリング・ブランドロゴ） |
 | CMP-LAYOUT-002 | AppLayout | `app/(main)/layout.tsx` | 認証済み共通レイアウト（ヘッダー＋サイドバー＋メインコンテンツ） |
-| CMP-LAYOUT-003 | AdminGuardLayout | `app/admin/layout.tsx` | 管理者ロール制限レイアウト（admin 以外は 403 リダイレクト） |
+| CMP-LAYOUT-003 | AdminGuardLayout | `app/(main)/admin/layout.tsx` | 管理者ロール制限レイアウト（admin 以外は 403 リダイレクト） |
 
 #### ページコンポーネント
 
@@ -35,8 +35,8 @@
 | CMP-PAGE-006 | ReviewPage | `app/(main)/projects/[id]/reviews/page.tsx` | SCR-C-006 |
 | CMP-PAGE-007 | BugPage | `app/(main)/projects/[id]/bugs/page.tsx` | SCR-C-007 |
 | CMP-PAGE-008 | ReportPage | `app/(main)/projects/[id]/reports/page.tsx` | SCR-C-008 |
-| CMP-PAGE-009 | UserManagementPage | `app/admin/users/page.tsx` | SCR-A-001 |
-| CMP-PAGE-010 | ProjectManagementPage | `app/admin/projects/page.tsx` | SCR-A-002 |
+| CMP-PAGE-009 | UserManagementPage | `app/(main)/admin/users/page.tsx` | SCR-A-001 |
+| CMP-PAGE-010 | ProjectManagementPage | `app/(main)/admin/projects/page.tsx` | SCR-A-002 |
 
 #### フィーチャーコンポーネント
 

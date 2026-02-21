@@ -108,19 +108,20 @@ T01（初期セットアップ）
 
 > **概要**: レイアウト・汎用UIコンポーネント実装 / **依存**: T01-2（shadcn/ui インストール済み）/ **並列**: T04 と並列実装可能
 
-- [ ] T05-1: `app/(auth)/layout.tsx` (AuthLayout): ログイン画面用センタリングレイアウト
-- [ ] T05-2: `app/(main)/layout.tsx` (AppLayout): 共通レイアウト（ヘッダー+サイドバー+メインコンテンツ）
-- [ ] T05-3: `app/admin/layout.tsx` (AdminGuardLayout): 管理者ロール制限レイアウト
-- [ ] T05-4: `components/features/app-sidebar.tsx` (AppSidebar): サイドバーナビゲーション（ロール別表示制御）
-- [ ] T05-5: `components/features/global-project-selector.tsx` (GlobalProjectSelector): プロジェクト切り替えドロップダウン
-- [ ] T05-6: `components/features/user-menu.tsx` (UserMenu): ユーザーメニュー（パスワード変更・ログアウト）
-- [ ] T05-7: `components/ui/status-badge.tsx` (StatusBadge): ステータスカラーバッジ（タスク・指摘・障害）
-- [ ] T05-8: `components/ui/severity-badge.tsx` (SeverityBadge): 重要度カラーバッジ
-- [ ] T05-9: `components/ui/slide-over.tsx` (SlideOver): 右寄せドロワー汎用コンポーネント（shadcn/ui Sheet 利用）
-- [ ] T05-10: `components/ui/confirm-dialog.tsx` (ConfirmDialog): 確認ダイアログ
-- [ ] T05-11: `components/ui/data-table.tsx` (DataTable): 汎用データテーブル（ソート・ページネーション）
-- [ ] T05-12: `components/ui/date-range-picker.tsx` (DateRangePicker): 期間選択ピッカー
-- [ ] T05-13: `components/ui/loading-spinner.tsx` (LoadingSpinner): ローディングスピナー
+- [x] T05-1: `app/(auth)/layout.tsx` (AuthLayout): ログイン画面用センタリングレイアウト
+- [x] T05-2: `app/(main)/layout.tsx` (AppLayout): 共通レイアウト（ヘッダー+サイドバー+メインコンテンツ）
+- [x] T05-3: `app/(main)/admin/layout.tsx` (AdminGuardLayout): 管理者ロール制限レイアウト
+- [x] T05-4: `components/features/app-sidebar.tsx` (AppSidebar): サイドバーナビゲーション（ロール別表示制御）
+- [x] T05-5: `components/features/global-project-selector.tsx` (GlobalProjectSelector): プロジェクト切り替えドロップダウン
+- [x] T05-6: `components/features/user-menu.tsx` (UserMenu): ユーザーメニュー（パスワード変更・ログアウト）
+- [x] T05-7: `components/ui/status-badge.tsx` (StatusBadge): ステータスカラーバッジ（タスク・指摘・障害）
+- [x] T05-8: `components/ui/severity-badge.tsx` (SeverityBadge): 重要度カラーバッジ
+- [x] T05-9: `components/ui/slide-over.tsx` (SlideOver): 右寄せドロワー汎用コンポーネント（shadcn/ui Sheet 利用）
+- [x] T05-10: `components/ui/confirm-dialog.tsx` (ConfirmDialog): 確認ダイアログ
+- [x] T05-11: `components/ui/data-table.tsx` (DataTable): 汎用データテーブル（ソート・ページネーション）
+- [x] T05-12: `components/ui/date-range-picker.tsx` (DateRangePicker): 期間選択ピッカー
+- [x] T05-13: `components/ui/loading-spinner.tsx` (LoadingSpinner): ローディングスピナー
+- [x] T05-14: **[RED]** `tests/unit/components/ui/` コンポーネントテスト作成（StatusBadge・SeverityBadge・LoadingSpinner・ConfirmDialog・DataTable の計45テスト・PRレビュー対応で追加済み）
 
 ---
 
@@ -131,9 +132,11 @@ T01（初期セットアップ）
 - [ ] T06-1: **[RED]** `tests/unit/services/auth.service.test.ts` 作成（パスワード変更・初回ログイン検証・パスワード履歴3世代チェックテスト・失敗確認）
 - [ ] T06-2: **[GREEN]** UserRepository 実装（`lib/repositories/user.repository.ts`）: findByEmail, findById, create, update（論理削除対応）
 - [ ] T06-3: **[GREEN]** AuthService 実装（`lib/services/auth.service.ts`）: パスワード変更・初回ログイン検証・パスワード履歴3世代管理（T06-1テストをパス）
-- [ ] T06-4: ログイン画面（`app/(auth)/login/page.tsx`）: メールアドレス・パスワード入力・エラー表示
-- [ ] T06-5: パスワード変更画面（`app/(main)/users/me/change-password/page.tsx`）: 現パスワード確認・新パスワード入力
-- [ ] T06-6: パスワード変更 API 実装（`PUT /api/users/me/password`）: バリデーション・現パスワード確認・ハッシュ更新
+- [ ] T06-4: **[RED]** `tests/unit/components/features/login-form.test.tsx` 作成（フォーム入力・バリデーション・エラー表示・ログイン送信テスト・失敗確認）
+- [ ] T06-5: **[GREEN]** ログイン画面（`app/(auth)/login/page.tsx`）: メールアドレス・パスワード入力・エラー表示（T06-4テストをパス）
+- [ ] T06-6: **[RED]** `tests/unit/components/features/change-password-form.test.tsx` 作成（現PW確認・新PW入力・ポリシー違反・成功テスト・失敗確認）
+- [ ] T06-7: **[GREEN]** パスワード変更画面（`app/(main)/users/me/change-password/page.tsx`）: 現パスワード確認・新パスワード入力（T06-6テストをパス）
+- [ ] T06-8: パスワード変更 API 実装（`PUT /api/users/me/password`）: バリデーション・現パスワード確認・ハッシュ更新
 
 ---
 
@@ -148,10 +151,12 @@ T01（初期セットアップ）
 - [ ] T07-5: プロジェクト詳細・更新 API（`GET/PUT /api/projects/[id]`）
 - [ ] T07-6: お気に入り API（`PUT /api/projects/[id]/favorite`）
 - [ ] T07-7: メンバー管理 API（`GET/POST /api/projects/[id]/members`, `DELETE /api/projects/[id]/members/[userId]`）
-- [ ] T07-8: `components/features/project-list-table.tsx` (ProjectListTable): 検索・フィルタ・お気に入りトグル・楽観的更新
-- [ ] T07-9: プロジェクト一覧画面（`app/(main)/projects/page.tsx`）: TanStack Query キャッシュ設定（staleTime: 30秒）
-- [ ] T07-10: `components/features/project-management-table.tsx` (ProjectManagementTable): 管理者用テーブル・アーカイブ操作
-- [ ] T07-11: プロジェクト管理画面（`app/admin/projects/page.tsx`）: 登録・編集・アーカイブ
+- [ ] T07-8: **[RED]** `tests/unit/components/features/project-list-table.test.tsx` 作成（一覧表示・検索・フィルタ・お気に入りトグルテスト・失敗確認）
+- [ ] T07-9: **[GREEN]** `components/features/project-list-table.tsx` (ProjectListTable): 検索・フィルタ・お気に入りトグル・楽観的更新（T07-8テストをパス）
+- [ ] T07-10: プロジェクト一覧画面（`app/(main)/projects/page.tsx`）: TanStack Query キャッシュ設定（staleTime: 30秒）
+- [ ] T07-11: **[RED]** `tests/unit/components/features/project-management-table.test.tsx` 作成（一覧表示・アーカイブ操作テスト・失敗確認）
+- [ ] T07-12: **[GREEN]** `components/features/project-management-table.tsx` (ProjectManagementTable): 管理者用テーブル・アーカイブ操作（T07-11テストをパス）
+- [ ] T07-13: プロジェクト管理画面（`app/(main)/admin/projects/page.tsx`）: 登録・編集・アーカイブ
 
 ---
 
@@ -166,10 +171,12 @@ T01（初期セットアップ）
 - [ ] T08-5: タスク登録 API（`POST /api/projects/[id]/tasks`）: 階層制限・バリデーション
 - [ ] T08-6: タスク更新 API（`PUT /api/projects/[id]/tasks/[taskId]`）: ガントチャートD&D対応
 - [ ] T08-7: タスク削除 API（`DELETE /api/projects/[id]/tasks/[taskId]`）: 日報明細紐付きチェック
-- [ ] T08-8: `components/features/task-slide-over.tsx` (TaskSlideOver): タスク登録/編集フォーム
-- [ ] T08-9: `components/features/wbs-tree-table.tsx` (WbsTreeTable): 階層ツリーテーブル・折りたたみ・予実工数表示
-- [ ] T08-10: `components/features/gantt-chart.tsx` (GanttChart): 日/週/月切替・D&Dによる期間変更・楽観的更新
-- [ ] T08-11: WBS 画面（`app/(main)/projects/[id]/wbs/page.tsx`）: WBSビュー/ガントチャート切替
+- [ ] T08-8: **[RED]** `tests/unit/components/features/task-slide-over.test.tsx` 作成（フォーム入力・バリデーション・登録/編集切替テスト・失敗確認）
+- [ ] T08-9: **[GREEN]** `components/features/task-slide-over.tsx` (TaskSlideOver): タスク登録/編集フォーム（T08-8テストをパス）
+- [ ] T08-10: **[RED]** `tests/unit/components/features/wbs-tree-table.test.tsx` 作成（階層ツリー表示・折りたたみ・予実工数表示テスト・失敗確認）
+- [ ] T08-11: **[GREEN]** `components/features/wbs-tree-table.tsx` (WbsTreeTable): 階層ツリーテーブル・折りたたみ・予実工数表示（T08-10テストをパス）
+- [ ] T08-12: `components/features/gantt-chart.tsx` (GanttChart): 日/週/月切替・D&Dによる期間変更・楽観的更新
+- [ ] T08-13: WBS 画面（`app/(main)/projects/[id]/wbs/page.tsx`）: WBSビュー/ガントチャート切替
 
 ---
 
@@ -183,10 +190,12 @@ T01（初期セットアップ）
 - [ ] T09-4: 日報一覧 API（`GET /api/projects/[id]/daily-reports`）: userId・期間フィルタ・カレンダービュー兼用
 - [ ] T09-5: 日報登録 API（`POST /api/projects/[id]/daily-reports`）: 複数タスク明細・将来日・作業時間バリデーション
 - [ ] T09-6: 日報更新 API（`PUT /api/projects/[id]/daily-reports/[reportId]`）: 明細差分更新（削除→再作成）
-- [ ] T09-7: `components/features/daily-report-calendar.tsx` (DailyReportCalendar): 月次カレンダー・入力済み(✓)・未入力警告(⚠)
-- [ ] T09-8: `components/features/daily-report-list.tsx` (DailyReportList): リストビュー・期間フィルタ・テーブル
-- [ ] T09-9: `components/features/daily-report-slide-over.tsx` (DailyReportSlideOver): 複数タスク行追加対応フォーム
-- [ ] T09-10: 日報画面（`app/(main)/projects/[id]/daily-reports/page.tsx`）: カレンダー/リスト切替
+- [ ] T09-7: **[RED]** `tests/unit/components/features/daily-report-calendar.test.tsx` 作成（月次カレンダー表示・入力済み/未入力マーカーテスト・失敗確認）
+- [ ] T09-8: **[GREEN]** `components/features/daily-report-calendar.tsx` (DailyReportCalendar): 月次カレンダー・入力済み(✓)・未入力警告(⚠)（T09-7テストをパス）
+- [ ] T09-9: **[RED]** `tests/unit/components/features/daily-report-slide-over.test.tsx` 作成（複数タスク行追加・作業時間入力・バリデーションテスト・失敗確認）
+- [ ] T09-10: **[GREEN]** `components/features/daily-report-slide-over.tsx` (DailyReportSlideOver): 複数タスク行追加対応フォーム（T09-9テストをパス）
+- [ ] T09-11: `components/features/daily-report-list.tsx` (DailyReportList): リストビュー・期間フィルタ・テーブル
+- [ ] T09-12: 日報画面（`app/(main)/projects/[id]/daily-reports/page.tsx`）: カレンダー/リスト切替
 
 ---
 
@@ -201,9 +210,11 @@ T01（初期セットアップ）
 - [ ] T10-5: 指摘一覧 API（`GET/POST /api/projects/[id]/review-items`）: ステータス・区分・担当者フィルタ
 - [ ] T10-6: 指摘更新 API（`PUT /api/projects/[id]/review-items/[itemId]`）: インラインステータス変更・楽観的更新対応
 - [ ] T10-7: 指摘区分一覧 API（`GET /api/projects/[id]/review-categories`）
-- [ ] T10-8: `components/features/review-session-list.tsx` (ReviewSessionList): セッション一覧・指摘数・未対応数表示
-- [ ] T10-9: `components/features/review-item-list.tsx` (ReviewItemList): 指摘一覧・インラインステータス変更
-- [ ] T10-10: レビュー記録票画面（`app/(main)/projects/[id]/reviews/page.tsx`）: セッション一覧/指摘一覧タブ切替
+- [ ] T10-8: **[RED]** `tests/unit/components/features/review-session-list.test.tsx` 作成（セッション一覧・指摘数・未対応数表示テスト・失敗確認）
+- [ ] T10-9: **[GREEN]** `components/features/review-session-list.tsx` (ReviewSessionList): セッション一覧・指摘数・未対応数表示（T10-8テストをパス）
+- [ ] T10-10: **[RED]** `tests/unit/components/features/review-item-list.test.tsx` 作成（指摘一覧・インラインステータス変更テスト・失敗確認）
+- [ ] T10-11: **[GREEN]** `components/features/review-item-list.tsx` (ReviewItemList): 指摘一覧・インラインステータス変更（T10-10テストをパス）
+- [ ] T10-12: レビュー記録票画面（`app/(main)/projects/[id]/reviews/page.tsx`）: セッション一覧/指摘一覧タブ切替
 
 ---
 
@@ -218,9 +229,11 @@ T01（初期セットアップ）
 - [ ] T11-5: 障害登録 API（`POST /api/projects/[id]/bugs`）: 自動採番・バリデーション
 - [ ] T11-6: 障害詳細 API（`GET /api/projects/[id]/bugs/[bugId]`）
 - [ ] T11-7: 障害更新 API（`PUT /api/projects/[id]/bugs/[bugId]`）: ステータス遷移チェック
-- [ ] T11-8: `components/features/bug-list.tsx` (BugList): 障害一覧テーブル・重要度・ステータスフィルタ・検索
-- [ ] T11-9: `components/features/bug-slide-over.tsx` (BugSlideOver): 登録/詳細/編集フォーム・WBSタスク紐付け
-- [ ] T11-10: 障害管理画面（`app/(main)/projects/[id]/bugs/page.tsx`）
+- [ ] T11-8: **[RED]** `tests/unit/components/features/bug-list.test.tsx` 作成（一覧表示・重要度/ステータスフィルタ・検索テスト・失敗確認）
+- [ ] T11-9: **[GREEN]** `components/features/bug-list.tsx` (BugList): 障害一覧テーブル・重要度・ステータスフィルタ・検索（T11-8テストをパス）
+- [ ] T11-10: **[RED]** `tests/unit/components/features/bug-slide-over.test.tsx` 作成（登録/編集フォーム・WBSタスク紐付け・バリデーションテスト・失敗確認）
+- [ ] T11-11: **[GREEN]** `components/features/bug-slide-over.tsx` (BugSlideOver): 登録/詳細/編集フォーム・WBSタスク紐付け（T11-10テストをパス）
+- [ ] T11-12: 障害管理画面（`app/(main)/projects/[id]/bugs/page.tsx`）
 
 ---
 
@@ -228,20 +241,23 @@ T01（初期セットアップ）
 
 > **概要**: ダッシュボード・EVM・信頼性成長曲線・指摘区分分析・障害密度分析 / **依存**: T04, T05, T06, T07, T08, T09, T10, T11
 
-- [ ] T12-1: ReportService 実装（`lib/services/report.service.ts`）: getDashboard（並列クエリ）・getEvmData・getReliabilityGrowth・getReviewCategoryStats・getBugDensity
-- [ ] T12-2: ダッシュボード集計 API（`GET /api/projects/[id]/dashboard`）: SPI/CPI・タスク完了率・障害数・指摘数・日報フラグ
-- [ ] T12-3: EVM 分析 API（`GET /api/projects/[id]/reports/evm`）: 日次累積 PV/AC/EV・SPI/CPI/残工数
-- [ ] T12-4: 信頼性成長曲線 API（`GET /api/projects/[id]/reports/reliability-growth`）: 累積バグ発見数・修正完了数
-- [ ] T12-5: 指摘区分分析 API（`GET /api/projects/[id]/reports/review-categories`）: 区分別件数・割合
-- [ ] T12-6: 障害密度分析 API（`GET /api/projects/[id]/reports/bug-density`）: 担当者別・WBSモジュール別件数
-- [ ] T12-7: `components/features/daily-report-alert.tsx` (DailyReportAlert): 日報未入力警告バナー（平日判定）
-- [ ] T12-8: `components/features/dashboard-summary-cards.tsx` (DashboardSummaryCards): SPI/CPI・障害数・指摘数・タスク完了率カード
-- [ ] T12-9: ダッシュボード画面（`app/(main)/projects/[id]/dashboard/page.tsx`）: TanStack Query（staleTime: 60秒）
-- [ ] T12-10: `components/features/evm-chart.tsx` (EvmChart): EVM折れ線グラフ（Recharts）・派生指標表示
-- [ ] T12-11: `components/features/reliability-growth-chart.tsx` (ReliabilityGrowthChart): 累積バグ発見/修正完了 2系列折れ線グラフ
-- [ ] T12-12: `components/features/review-category-pie-chart.tsx` (ReviewCategoryPieChart): 指摘区分円グラフ＋件数テーブル
-- [ ] T12-13: `components/features/bug-density-bar-chart.tsx` (BugDensityBarChart): 担当者別・モジュール別障害密度棒グラフ
-- [ ] T12-14: レポート・分析画面（`app/(main)/projects/[id]/reports/page.tsx`）: 4タブ切替・期間フィルタ
+- [ ] T12-1: **[RED]** `tests/unit/services/report.service.test.ts` 作成（getDashboard並列クエリ・getEvmData EVM計算・getReliabilityGrowth成長曲線テスト・失敗確認）
+- [ ] T12-2: **[GREEN]** ReportService 実装（`lib/services/report.service.ts`）: getDashboard（並列クエリ）・getEvmData・getReliabilityGrowth・getReviewCategoryStats・getBugDensity（T12-1テストをパス）
+- [ ] T12-3: ダッシュボード集計 API（`GET /api/projects/[id]/dashboard`）: SPI/CPI・タスク完了率・障害数・指摘数・日報フラグ
+- [ ] T12-4: EVM 分析 API（`GET /api/projects/[id]/reports/evm`）: 日次累積 PV/AC/EV・SPI/CPI/残工数
+- [ ] T12-5: 信頼性成長曲線 API（`GET /api/projects/[id]/reports/reliability-growth`）: 累積バグ発見数・修正完了数
+- [ ] T12-6: 指摘区分分析 API（`GET /api/projects/[id]/reports/review-categories`）: 区分別件数・割合
+- [ ] T12-7: 障害密度分析 API（`GET /api/projects/[id]/reports/bug-density`）: 担当者別・WBSモジュール別件数
+- [ ] T12-8: **[RED]** `tests/unit/components/features/daily-report-alert.test.tsx` 作成（平日判定・未入力警告バナー表示テスト・失敗確認）
+- [ ] T12-9: **[GREEN]** `components/features/daily-report-alert.tsx` (DailyReportAlert): 日報未入力警告バナー（平日判定）（T12-8テストをパス）
+- [ ] T12-10: **[RED]** `tests/unit/components/features/dashboard-summary-cards.test.tsx` 作成（SPI/CPI・障害数・指摘数・タスク完了率カード表示テスト・失敗確認）
+- [ ] T12-11: **[GREEN]** `components/features/dashboard-summary-cards.tsx` (DashboardSummaryCards): SPI/CPI・障害数・指摘数・タスク完了率カード（T12-10テストをパス）
+- [ ] T12-12: ダッシュボード画面（`app/(main)/projects/[id]/dashboard/page.tsx`）: TanStack Query（staleTime: 60秒）
+- [ ] T12-13: `components/features/evm-chart.tsx` (EvmChart): EVM折れ線グラフ（Recharts）・派生指標表示
+- [ ] T12-14: `components/features/reliability-growth-chart.tsx` (ReliabilityGrowthChart): 累積バグ発見/修正完了 2系列折れ線グラフ
+- [ ] T12-15: `components/features/review-category-pie-chart.tsx` (ReviewCategoryPieChart): 指摘区分円グラフ＋件数テーブル
+- [ ] T12-16: `components/features/bug-density-bar-chart.tsx` (BugDensityBarChart): 担当者別・モジュール別障害密度棒グラフ
+- [ ] T12-17: レポート・分析画面（`app/(main)/projects/[id]/reports/page.tsx`）: 4タブ切替・期間フィルタ
 
 ---
 
@@ -255,8 +271,9 @@ T01（初期セットアップ）
 - [ ] T13-4: ユーザー登録 API（`POST /api/admin/users`）: 初期パスワード設定・メール重複チェック
 - [ ] T13-5: ユーザー更新 API（`PUT /api/admin/users/[id]`）: 氏名・ロール・有効/無効（論理削除）
 - [ ] T13-6: パスワードリセット API（`POST /api/admin/users/[id]/reset-password`）: 強制パスワード変更フラグ設定
-- [ ] T13-7: `components/features/user-management-table.tsx` (UserManagementTable): ユーザー一覧・有効/無効フィルタ・編集ボタン
-- [ ] T13-8: ユーザー管理画面（`app/admin/users/page.tsx`）: 登録・編集ダイアログ・パスワードリセット
+- [ ] T13-7: **[RED]** `tests/unit/components/features/user-management-table.test.tsx` 作成（ユーザー一覧・有効/無効フィルタ・編集ボタンテスト・失敗確認）
+- [ ] T13-8: **[GREEN]** `components/features/user-management-table.tsx` (UserManagementTable): ユーザー一覧・有効/無効フィルタ・編集ボタン（T13-7テストをパス）
+- [ ] T13-9: ユーザー管理画面（`app/(main)/admin/users/page.tsx`）: 登録・編集ダイアログ・パスワードリセット
 
 ---
 
