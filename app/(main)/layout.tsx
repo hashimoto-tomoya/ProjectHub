@@ -3,6 +3,7 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import { auth } from "@/auth";
 import { AppSidebar } from "@/components/features/app-sidebar";
+import type { Role } from "@/lib/types/domain";
 import { GlobalProjectSelector } from "@/components/features/global-project-selector";
 import { UserMenu } from "@/components/features/user-menu";
 
@@ -16,7 +17,7 @@ export default async function AppLayout({ children }: { children: ReactNode }) {
   return (
     <div className="flex h-screen overflow-hidden bg-gray-50">
       {/* Sidebar */}
-      <AppSidebar role={session.user.role ?? "developer"} />
+      <AppSidebar role={(session.user.role as Role) ?? "developer"} />
 
       {/* Main content area */}
       <div className="flex flex-1 flex-col overflow-hidden">

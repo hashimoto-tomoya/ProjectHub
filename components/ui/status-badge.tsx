@@ -8,7 +8,7 @@ interface StatusConfig {
   className: string;
 }
 
-const statusConfig: Record<string, StatusConfig> = {
+const statusConfig: Record<Status, StatusConfig> = {
   // TaskStatus
   未着手: {
     label: "未着手",
@@ -57,10 +57,7 @@ interface StatusBadgeProps {
 }
 
 export function StatusBadge({ status, variant = "default", className }: StatusBadgeProps) {
-  const config = statusConfig[status] ?? {
-    label: status,
-    className: "bg-gray-100 text-gray-700 border-gray-200",
-  };
+  const config = statusConfig[status];
 
   return (
     <span

@@ -71,7 +71,7 @@ const adminNavItems: NavItem[] = [
 ];
 
 interface AppSidebarProps {
-  role: string;
+  role: Role;
 }
 
 export function AppSidebar({ role }: AppSidebarProps) {
@@ -80,7 +80,7 @@ export function AppSidebar({ role }: AppSidebarProps) {
   const projectId = params?.id as string | undefined;
 
   const visibleAdminItems = adminNavItems.filter(
-    (item) => !item.roles || item.roles.includes(role as Role)
+    (item) => !item.roles || item.roles.includes(role)
   );
 
   const getProjectHref = (segment: string) => {

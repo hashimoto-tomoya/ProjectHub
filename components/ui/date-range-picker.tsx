@@ -12,7 +12,6 @@ import { cn } from "@/lib/utils";
 
 interface DateRangePickerProps {
   value?: DateRange;
-  // eslint-disable-next-line no-unused-vars
   onChange: (_range: DateRange | undefined) => void;
   placeholder?: string;
   className?: string;
