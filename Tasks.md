@@ -108,19 +108,19 @@ T01（初期セットアップ）
 
 > **概要**: レイアウト・汎用UIコンポーネント実装 / **依存**: T01-2（shadcn/ui インストール済み）/ **並列**: T04 と並列実装可能
 
-- [ ] T05-1: `app/(auth)/layout.tsx` (AuthLayout): ログイン画面用センタリングレイアウト
-- [ ] T05-2: `app/(main)/layout.tsx` (AppLayout): 共通レイアウト（ヘッダー+サイドバー+メインコンテンツ）
-- [ ] T05-3: `app/admin/layout.tsx` (AdminGuardLayout): 管理者ロール制限レイアウト
-- [ ] T05-4: `components/features/app-sidebar.tsx` (AppSidebar): サイドバーナビゲーション（ロール別表示制御）
-- [ ] T05-5: `components/features/global-project-selector.tsx` (GlobalProjectSelector): プロジェクト切り替えドロップダウン
-- [ ] T05-6: `components/features/user-menu.tsx` (UserMenu): ユーザーメニュー（パスワード変更・ログアウト）
-- [ ] T05-7: `components/ui/status-badge.tsx` (StatusBadge): ステータスカラーバッジ（タスク・指摘・障害）
-- [ ] T05-8: `components/ui/severity-badge.tsx` (SeverityBadge): 重要度カラーバッジ
-- [ ] T05-9: `components/ui/slide-over.tsx` (SlideOver): 右寄せドロワー汎用コンポーネント（shadcn/ui Sheet 利用）
-- [ ] T05-10: `components/ui/confirm-dialog.tsx` (ConfirmDialog): 確認ダイアログ
-- [ ] T05-11: `components/ui/data-table.tsx` (DataTable): 汎用データテーブル（ソート・ページネーション）
-- [ ] T05-12: `components/ui/date-range-picker.tsx` (DateRangePicker): 期間選択ピッカー
-- [ ] T05-13: `components/ui/loading-spinner.tsx` (LoadingSpinner): ローディングスピナー
+- [x] T05-1: `app/(auth)/layout.tsx` (AuthLayout): ログイン画面用センタリングレイアウト
+- [x] T05-2: `app/(main)/layout.tsx` (AppLayout): 共通レイアウト（ヘッダー+サイドバー+メインコンテンツ）
+- [x] T05-3: `app/(main)/admin/layout.tsx` (AdminGuardLayout): 管理者ロール制限レイアウト
+- [x] T05-4: `components/features/app-sidebar.tsx` (AppSidebar): サイドバーナビゲーション（ロール別表示制御）
+- [x] T05-5: `components/features/global-project-selector.tsx` (GlobalProjectSelector): プロジェクト切り替えドロップダウン
+- [x] T05-6: `components/features/user-menu.tsx` (UserMenu): ユーザーメニュー（パスワード変更・ログアウト）
+- [x] T05-7: `components/ui/status-badge.tsx` (StatusBadge): ステータスカラーバッジ（タスク・指摘・障害）
+- [x] T05-8: `components/ui/severity-badge.tsx` (SeverityBadge): 重要度カラーバッジ
+- [x] T05-9: `components/ui/slide-over.tsx` (SlideOver): 右寄せドロワー汎用コンポーネント（shadcn/ui Sheet 利用）
+- [x] T05-10: `components/ui/confirm-dialog.tsx` (ConfirmDialog): 確認ダイアログ
+- [x] T05-11: `components/ui/data-table.tsx` (DataTable): 汎用データテーブル（ソート・ページネーション）
+- [x] T05-12: `components/ui/date-range-picker.tsx` (DateRangePicker): 期間選択ピッカー
+- [x] T05-13: `components/ui/loading-spinner.tsx` (LoadingSpinner): ローディングスピナー
 
 ---
 
