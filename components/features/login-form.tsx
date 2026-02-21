@@ -51,7 +51,8 @@ export function LoginForm() {
         return;
       }
 
-      const callbackUrl = searchParams?.get("callbackUrl") ?? "/projects";
+      const raw = searchParams?.get("callbackUrl") ?? "/projects";
+      const callbackUrl = raw.startsWith("/") ? raw : "/projects";
       router.push(callbackUrl);
     } finally {
       setIsLoading(false);

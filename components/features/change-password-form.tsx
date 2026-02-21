@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -14,6 +16,8 @@ interface FieldErrors {
 }
 
 export function ChangePasswordForm() {
+  const { data: session, update } = useSession();
+  const router = useRouter();
   const [error, setError] = useState<string | null>(null);
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
   const [success, setSuccess] = useState(false);
@@ -46,7 +50,9 @@ export function ChangePasswordForm() {
       errors.newPassword = "パスワードには数字を1文字以上含めてください";
     }
 
-    if (newPassword && confirmPassword && newPassword !== confirmPassword) {
+    if (!confirmPassword) {
+      errors.confirmPassword = "確認パスワードを入力してください";
+    } else if (newPassword && newPassword !== confirmPassword) {
       errors.confirmPassword = "新しいパスワードが一致しません";
     }
 
@@ -70,7 +76,12 @@ export function ChangePasswordForm() {
         return;
       }
 
-      setSuccess(true);
+      if (session?.user?.mustChangePassword) {
+        await update({ mustChangePassword: false });
+        router.push("/projects");
+      } else {
+        setSuccess(true);
+      }
     } finally {
       setIsLoading(false);
     }

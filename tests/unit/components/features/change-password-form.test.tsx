@@ -3,6 +3,16 @@ import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { ChangePasswordForm } from "@/components/features/change-password-form";
 
+// next-auth/react のモック
+let mockMustChangePassword = false;
+const mockUpdateSession = vi.fn();
+vi.mock("next-auth/react", () => ({
+  useSession: () => ({
+    data: { user: { mustChangePassword: mockMustChangePassword } },
+    update: mockUpdateSession,
+  }),
+}));
+
 // next/navigation のモック
 const mockRouterPush = vi.fn();
 vi.mock("next/navigation", () => ({
@@ -16,6 +26,7 @@ vi.stubGlobal("fetch", mockFetch);
 describe("ChangePasswordForm", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    mockMustChangePassword = false;
   });
 
   it("現在のパスワード・新しいパスワード・確認パスワードのフォームが表示される", () => {
@@ -64,6 +75,18 @@ describe("ChangePasswordForm", () => {
     expect(mockFetch).not.toHaveBeenCalled();
   });
 
+  it("確認パスワードが空の場合はエラーが表示される", async () => {
+    render(<ChangePasswordForm />);
+
+    await userEvent.type(screen.getByLabelText("現在のパスワード"), "CurrentP1");
+    await userEvent.type(screen.getByLabelText("新しいパスワード"), "NewPass12");
+    // confirmPassword は入力しない
+    await userEvent.click(screen.getByRole("button", { name: "パスワードを変更" }));
+
+    expect(await screen.findByText("確認パスワードを入力してください")).toBeInTheDocument();
+    expect(mockFetch).not.toHaveBeenCalled();
+  });
+
   it("確認パスワードが一致しない場合はエラーが表示される", async () => {
     render(<ChangePasswordForm />);
 
@@ -106,6 +129,25 @@ describe("ChangePasswordForm", () => {
     await userEvent.click(screen.getByRole("button", { name: "パスワードを変更" }));
 
     expect(await screen.findByText("パスワードを変更しました")).toBeInTheDocument();
+  });
+
+  it("mustChangePassword が true の場合、成功後に /projects にリダイレクト", async () => {
+    mockMustChangePassword = true;
+    mockFetch.mockResolvedValue({
+      ok: true,
+      status: 204,
+    });
+
+    render(<ChangePasswordForm />);
+
+    await userEvent.type(screen.getByLabelText("現在のパスワード"), "CurrentP1");
+    await userEvent.type(screen.getByLabelText("新しいパスワード"), "NewPass12");
+    await userEvent.type(screen.getByLabelText("新しいパスワード（確認）"), "NewPass12");
+    await userEvent.click(screen.getByRole("button", { name: "パスワードを変更" }));
+
+    await waitFor(() => {
+      expect(mockRouterPush).toHaveBeenCalledWith("/projects");
+    });
   });
 
   it("PUT /api/users/me/password が正しいデータで呼ばれる", async () => {

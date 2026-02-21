@@ -11,14 +11,16 @@ vi.mock("next-auth/react", () => ({
 
 // next/navigation のモック
 const mockRouterPush = vi.fn();
+const mockSearchParamsGet = vi.fn().mockReturnValue(null);
 vi.mock("next/navigation", () => ({
   useRouter: () => ({ push: mockRouterPush }),
-  useSearchParams: () => ({ get: vi.fn().mockReturnValue(null) }),
+  useSearchParams: () => ({ get: mockSearchParamsGet }),
 }));
 
 describe("LoginForm", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    mockSearchParamsGet.mockReturnValue(null);
   });
 
   it("メールアドレスとパスワードの入力フォームが表示される", () => {
@@ -97,6 +99,36 @@ describe("LoginForm", () => {
           redirect: false,
         })
       );
+    });
+  });
+
+  it("外部URLの callbackUrl は /projects にフォールバックされる", async () => {
+    mockSignIn.mockResolvedValue({ error: null, ok: true });
+    mockSearchParamsGet.mockReturnValueOnce("https://phishing.com");
+
+    render(<LoginForm />);
+
+    await userEvent.type(screen.getByLabelText("メールアドレス"), "test@test.local");
+    await userEvent.type(screen.getByLabelText("パスワード"), "Password1");
+    await userEvent.click(screen.getByRole("button", { name: "ログイン" }));
+
+    await waitFor(() => {
+      expect(mockRouterPush).toHaveBeenCalledWith("/projects");
+    });
+  });
+
+  it("相対パスの callbackUrl は使用される", async () => {
+    mockSignIn.mockResolvedValue({ error: null, ok: true });
+    mockSearchParamsGet.mockReturnValueOnce("/projects/123");
+
+    render(<LoginForm />);
+
+    await userEvent.type(screen.getByLabelText("メールアドレス"), "test@test.local");
+    await userEvent.type(screen.getByLabelText("パスワード"), "Password1");
+    await userEvent.click(screen.getByRole("button", { name: "ログイン" }));
+
+    await waitFor(() => {
+      expect(mockRouterPush).toHaveBeenCalledWith("/projects/123");
     });
   });
 

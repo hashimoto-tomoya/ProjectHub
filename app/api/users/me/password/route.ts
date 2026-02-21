@@ -20,6 +20,8 @@ export async function PUT(req: Request) {
       input.newPassword
     );
 
+    // TODO: AuditLog への記録（TBL-010 相当）は将来フェーズで対応する
+
     return new NextResponse(null, { status: 204 });
   } catch (error) {
     return handleApiError(error);
