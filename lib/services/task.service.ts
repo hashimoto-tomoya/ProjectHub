@@ -44,6 +44,10 @@ export class TaskService {
       level = parentTask.level + 1;
     }
 
+    const displayOrder =
+      input.displayOrder ??
+      (await this.taskRepository.getMaxSortOrder(projectId, parentTaskId)) + 1;
+
     return this.taskRepository.create({
       projectId,
       parentTaskId,
@@ -54,16 +58,17 @@ export class TaskService {
       endDate: input.endDate ?? null,
       status: input.status ?? "未着手",
       plannedHours: input.plannedHours ?? null,
-      displayOrder: input.displayOrder ?? 0,
+      displayOrder,
     });
   }
 
   /**
    * タスク更新
+   * - プロジェクト所有権チェック
    * - 日付バリデーション
    */
-  async update(taskId: bigint, input: UpdateTaskRequest): Promise<TaskResponse> {
-    const existing = await this.taskRepository.findById(taskId);
+  async update(projectId: bigint, taskId: bigint, input: UpdateTaskRequest): Promise<TaskResponse> {
+    const existing = await this.taskRepository.findByIdAndProjectId(taskId, projectId);
     if (!existing) {
       throw new NotFoundError("タスクが見つかりません");
     }
@@ -89,10 +94,11 @@ export class TaskService {
 
   /**
    * タスク削除
+   * - プロジェクト所有権チェック
    * - 日報明細が紐付いている場合は削除不可
    */
-  async delete(taskId: bigint): Promise<void> {
-    const existing = await this.taskRepository.findById(taskId);
+  async delete(projectId: bigint, taskId: bigint): Promise<void> {
+    const existing = await this.taskRepository.findByIdAndProjectId(taskId, projectId);
     if (!existing) {
       throw new NotFoundError("タスクが見つかりません");
     }

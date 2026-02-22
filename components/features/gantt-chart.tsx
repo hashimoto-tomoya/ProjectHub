@@ -136,19 +136,6 @@ export function GanttChart({ tasks, projectId, onTaskUpdate }: GanttChartProps) 
     [periodStart, periodEnd, viewMode]
   );
 
-  // X座標から日付を計算
-  const _xToDate = useCallback(
-    (x: number): Date => {
-      const totalDays = Math.round((periodEnd.getTime() - periodStart.getTime()) / MS_PER_DAY) + 1;
-      const totalWidth = COLUMN_COUNT[viewMode] * COLUMN_WIDTH[viewMode];
-      const daysFromStart = Math.round((x / totalWidth) * totalDays);
-      const d = new Date(periodStart);
-      d.setDate(d.getDate() + daysFromStart);
-      return d;
-    },
-    [periodStart, periodEnd, viewMode]
-  );
-
   const totalWidth = COLUMN_COUNT[viewMode] * COLUMN_WIDTH[viewMode];
 
   // 前後への移動
@@ -347,11 +334,11 @@ export function GanttChart({ tasks, projectId, onTaskUpdate }: GanttChartProps) 
 
                 const start = parseDate(startStr);
                 const end = parseDate(endStr);
+                const totalDays =
+                  Math.round((periodEnd.getTime() - periodStart.getTime()) / MS_PER_DAY) + 1;
+                const dayWidth = (COLUMN_COUNT[viewMode] * COLUMN_WIDTH[viewMode]) / totalDays;
                 const left = Math.max(0, dateToX(start));
-                const right = Math.min(
-                  totalWidth,
-                  dateToX(end) + COLUMN_WIDTH[viewMode] / COLUMN_COUNT[viewMode]
-                );
+                const right = Math.min(totalWidth, dateToX(end) + dayWidth);
                 const width = Math.max(8, right - left);
 
                 return (

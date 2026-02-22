@@ -29,9 +29,6 @@ export function WbsTreeTable({
     setCollapsed((prev) => ({ ...prev, [taskId]: !prev[taskId] }));
   };
 
-  // ルートタスク（parentTaskId=null）のみ抽出（未使用だが将来の拡張用に保持）
-  const _rootTasks = tasks.filter((t) => t.parentTaskId === null);
-
   // 子タスクを取得
   const getChildren = (parentId: number) => tasks.filter((t) => t.parentTaskId === parentId);
 

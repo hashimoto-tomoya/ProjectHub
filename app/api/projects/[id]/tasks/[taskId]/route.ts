@@ -21,7 +21,7 @@ export async function PUT(
     const body = await req.json();
     const input = updateTaskSchema.parse(body);
 
-    const task = await taskService.update(BigInt(taskId), input);
+    const task = await taskService.update(BigInt(id), BigInt(taskId), input);
 
     return NextResponse.json({ data: task });
   } catch (error) {
@@ -43,7 +43,7 @@ export async function DELETE(
     await requireRole(["admin", "pm"]);
     await requireProjectMember(Number(id));
 
-    await taskService.delete(BigInt(taskId));
+    await taskService.delete(BigInt(id), BigInt(taskId));
 
     return new NextResponse(null, { status: 204 });
   } catch (error) {

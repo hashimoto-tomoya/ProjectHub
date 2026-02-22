@@ -8,7 +8,9 @@ import type { TaskResponse } from "@/lib/types/api";
 const mockTaskRepository: TaskRepository = {
   findByProjectWithActualHours: vi.fn(),
   findById: vi.fn(),
+  findByIdAndProjectId: vi.fn(),
   findChildren: vi.fn(),
+  getMaxSortOrder: vi.fn(),
   create: vi.fn(),
   update: vi.fn(),
   delete: vi.fn(),
@@ -37,6 +39,7 @@ describe("TaskService", () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
+    vi.mocked(mockTaskRepository.getMaxSortOrder).mockResolvedValue(0);
     taskService = new TaskService(mockTaskRepository);
   });
 
@@ -169,10 +172,10 @@ describe("TaskService", () => {
       const existingTask = makeTask({ id: 5, startDate: "2026-01-01", endDate: "2026-01-31" });
       const updatedTask = makeTask({ id: 5, startDate: "2026-02-01", endDate: "2026-02-28" });
 
-      vi.mocked(mockTaskRepository.findById).mockResolvedValue(existingTask);
+      vi.mocked(mockTaskRepository.findByIdAndProjectId).mockResolvedValue(existingTask);
       vi.mocked(mockTaskRepository.update).mockResolvedValue(updatedTask);
 
-      const result = await taskService.update(BigInt(5), {
+      const result = await taskService.update(BigInt(1), BigInt(5), {
         startDate: "2026-02-01",
         endDate: "2026-02-28",
       });
@@ -189,14 +192,39 @@ describe("TaskService", () => {
     });
 
     it("存在しないタスクを更新すると NotFoundError", async () => {
-      vi.mocked(mockTaskRepository.findById).mockResolvedValue(null);
+      vi.mocked(mockTaskRepository.findByIdAndProjectId).mockResolvedValue(null);
 
       await expect(
-        taskService.update(BigInt(999), {
+        taskService.update(BigInt(1), BigInt(999), {
           startDate: "2026-02-01",
           endDate: "2026-02-28",
         })
       ).rejects.toThrow(NotFoundError);
+    });
+
+    it("別プロジェクトのタスクを更新すると NotFoundError（所有権チェック）", async () => {
+      vi.mocked(mockTaskRepository.findByIdAndProjectId).mockResolvedValue(null);
+
+      await expect(
+        taskService.update(BigInt(2), BigInt(5), {
+          startDate: "2026-02-01",
+          endDate: "2026-02-28",
+        })
+      ).rejects.toThrow(NotFoundError);
+    });
+
+    it("update で endDate < startDate の場合 ValidationError", async () => {
+      const existingTask = makeTask({ id: 5, startDate: "2026-01-01", endDate: "2026-01-31" });
+      vi.mocked(mockTaskRepository.findByIdAndProjectId).mockResolvedValue(existingTask);
+
+      await expect(
+        taskService.update(BigInt(1), BigInt(5), {
+          startDate: "2026-03-01",
+          endDate: "2026-02-01",
+        })
+      ).rejects.toThrow(ValidationError);
+
+      expect(mockTaskRepository.update).not.toHaveBeenCalled();
     });
   });
 
@@ -207,27 +235,33 @@ describe("TaskService", () => {
   describe("delete", () => {
     it("日報明細が紐付いていない場合は削除できる", async () => {
       const task = makeTask({ id: 5 });
-      vi.mocked(mockTaskRepository.findById).mockResolvedValue(task);
+      vi.mocked(mockTaskRepository.findByIdAndProjectId).mockResolvedValue(task);
       vi.mocked(mockTaskRepository.hasDailyReportEntries).mockResolvedValue(false);
       vi.mocked(mockTaskRepository.delete).mockResolvedValue(undefined);
 
-      await expect(taskService.delete(BigInt(5))).resolves.toBeUndefined();
+      await expect(taskService.delete(BigInt(1), BigInt(5))).resolves.toBeUndefined();
       expect(mockTaskRepository.delete).toHaveBeenCalledWith(BigInt(5));
     });
 
     it("日報明細が紐付いている場合は ValidationError", async () => {
       const task = makeTask({ id: 5 });
-      vi.mocked(mockTaskRepository.findById).mockResolvedValue(task);
+      vi.mocked(mockTaskRepository.findByIdAndProjectId).mockResolvedValue(task);
       vi.mocked(mockTaskRepository.hasDailyReportEntries).mockResolvedValue(true);
 
-      await expect(taskService.delete(BigInt(5))).rejects.toThrow(ValidationError);
+      await expect(taskService.delete(BigInt(1), BigInt(5))).rejects.toThrow(ValidationError);
       expect(mockTaskRepository.delete).not.toHaveBeenCalled();
     });
 
     it("存在しないタスクを削除すると NotFoundError", async () => {
-      vi.mocked(mockTaskRepository.findById).mockResolvedValue(null);
+      vi.mocked(mockTaskRepository.findByIdAndProjectId).mockResolvedValue(null);
 
-      await expect(taskService.delete(BigInt(999))).rejects.toThrow(NotFoundError);
+      await expect(taskService.delete(BigInt(1), BigInt(999))).rejects.toThrow(NotFoundError);
+    });
+
+    it("別プロジェクトのタスクを削除すると NotFoundError（所有権チェック）", async () => {
+      vi.mocked(mockTaskRepository.findByIdAndProjectId).mockResolvedValue(null);
+
+      await expect(taskService.delete(BigInt(2), BigInt(5))).rejects.toThrow(NotFoundError);
     });
   });
 });

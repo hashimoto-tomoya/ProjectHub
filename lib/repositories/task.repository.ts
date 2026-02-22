@@ -5,7 +5,9 @@ import type { TaskResponse } from "@/lib/types/api";
 export interface TaskRepository {
   findByProjectWithActualHours(projectId: bigint): Promise<TaskResponse[]>;
   findById(id: bigint): Promise<TaskResponse | null>;
+  findByIdAndProjectId(id: bigint, projectId: bigint): Promise<TaskResponse | null>;
   findChildren(parentId: bigint): Promise<TaskResponse[]>;
+  getMaxSortOrder(projectId: bigint, parentTaskId: number | null): Promise<number>;
   create(data: {
     projectId: bigint;
     parentTaskId: number | null;
@@ -78,7 +80,7 @@ export class PrismaTaskRepository implements TaskRepository {
           select: { workHours: true },
         },
       },
-      orderBy: [{ level: "asc" }, { sortOrder: "asc" }],
+      orderBy: [{ sortOrder: "asc" }],
     });
 
     return tasks.map((task) => {
@@ -110,6 +112,39 @@ export class PrismaTaskRepository implements TaskRepository {
       0
     );
     return toTaskResponse(task, actualHours);
+  }
+
+  async findByIdAndProjectId(id: bigint, projectId: bigint): Promise<TaskResponse | null> {
+    const task = await prisma.task.findFirst({
+      where: { id, projectId },
+      include: {
+        assignee: {
+          select: { id: true, name: true },
+        },
+        reportEntries: {
+          select: { workHours: true },
+        },
+      },
+    });
+
+    if (!task) return null;
+
+    const actualHours = task.reportEntries.reduce(
+      (sum: number, e: { workHours: Prisma.Decimal }) => sum + Number(e.workHours),
+      0
+    );
+    return toTaskResponse(task, actualHours);
+  }
+
+  async getMaxSortOrder(projectId: bigint, parentTaskId: number | null): Promise<number> {
+    const result = await prisma.task.aggregate({
+      where: {
+        projectId,
+        parentTaskId: parentTaskId ? BigInt(parentTaskId) : null,
+      },
+      _max: { sortOrder: true },
+    });
+    return result._max.sortOrder ?? 0;
   }
 
   async findChildren(parentId: bigint): Promise<TaskResponse[]> {
@@ -145,10 +180,8 @@ export class PrismaTaskRepository implements TaskRepository {
         level: data.level,
         name: data.name,
         assigneeId: data.assigneeId ? BigInt(data.assigneeId) : null,
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        startDate: (data.startDate ? new Date(data.startDate) : undefined) as any,
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        endDate: (data.endDate ? new Date(data.endDate) : undefined) as any,
+        startDate: data.startDate ? new Date(data.startDate) : null,
+        endDate: data.endDate ? new Date(data.endDate) : null,
         status: data.status,
         plannedHours: data.plannedHours ?? 0,
         sortOrder: data.displayOrder,
@@ -189,10 +222,10 @@ export class PrismaTaskRepository implements TaskRepository {
     }
 
     if (data.startDate !== undefined) {
-      updateData.startDate = data.startDate ? new Date(data.startDate) : undefined;
+      updateData.startDate = data.startDate ? new Date(data.startDate) : null;
     }
     if (data.endDate !== undefined) {
-      updateData.endDate = data.endDate ? new Date(data.endDate) : undefined;
+      updateData.endDate = data.endDate ? new Date(data.endDate) : null;
     }
 
     const task = await prisma.task.update({

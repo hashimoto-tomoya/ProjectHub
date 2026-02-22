@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
 import { SlideOver } from "@/components/ui/slide-over";
@@ -43,6 +43,7 @@ const TASK_STATUS_OPTIONS: { value: TaskStatus; label: string }[] = [
 export function TaskSlideOver({ open, projectId, task, onClose, onSuccess }: TaskSlideOverProps) {
   const isEditMode = task !== undefined;
   const title = isEditMode ? "タスク編集" : "タスク登録";
+  const [serverError, setServerError] = useState<string | null>(null);
 
   const {
     register,
@@ -94,12 +95,19 @@ export function TaskSlideOver({ open, projectId, task, onClose, onSuccess }: Tas
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       });
-      if (!res.ok) throw new Error("タスクの保存に失敗しました");
+      if (!res.ok) {
+        const errBody = await res.json().catch(() => null);
+        throw new Error(errBody?.error?.message ?? "タスクの保存に失敗しました");
+      }
       return res.json();
     },
     onSuccess: () => {
+      setServerError(null);
       onSuccess();
       onClose();
+    },
+    onError: (err: Error) => {
+      setServerError(err.message);
     },
   });
 
@@ -119,6 +127,11 @@ export function TaskSlideOver({ open, projectId, task, onClose, onSuccess }: Tas
   return (
     <SlideOver open={open} onClose={onClose} title={title}>
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
+        {serverError && (
+          <p className="rounded-md bg-destructive/10 px-3 py-2 text-sm text-destructive">
+            {serverError}
+          </p>
+        )}
         {/* タスク名 */}
         <div className="flex flex-col gap-1.5">
           <Label htmlFor="name">タスク名</Label>
