@@ -51,11 +51,29 @@ export class ConflictError extends AppError {
   }
 }
 
+export class ValidationError extends AppError {
+  statusCode = 400;
+  code = "VALIDATION_ERROR";
+
+  constructor(message = "入力値が不正です") {
+    super(message);
+  }
+}
+
 export class InvalidTransitionError extends AppError {
   statusCode = 422;
   code = "INVALID_TRANSITION";
 
   constructor(message = "不正なステータス遷移です") {
+    super(message);
+  }
+}
+
+export class InvalidHierarchyError extends AppError {
+  statusCode = 422;
+  code = "INVALID_HIERARCHY";
+
+  constructor(message = "タスクの階層制限を超えています") {
     super(message);
   }
 }

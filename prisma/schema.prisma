@@ -100,8 +100,8 @@ model Task {
   level        Int       @db.SmallInt // 1=大項目 / 2=中項目 / 3=小項目
   name         String    @db.VarChar(300)
   assigneeId   BigInt?   @map("assignee_id")
-  startDate    DateTime  @map("start_date") @db.Date
-  endDate      DateTime  @map("end_date") @db.Date
+  startDate    DateTime? @map("start_date") @db.Date
+  endDate      DateTime? @map("end_date") @db.Date
   plannedHours Decimal   @default(0) @map("planned_hours") @db.Decimal(8, 2)
   status       String    @default("未着手") @db.VarChar(20) // 未着手 / 進行中 / 完了 / 保留
   sortOrder    Int       @default(0) @map("sort_order")

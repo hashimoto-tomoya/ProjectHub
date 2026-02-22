@@ -164,19 +164,19 @@ T01（初期セットアップ）
 
 > **概要**: タスクCRUD・ガントチャート・実績工数集計 / **依存**: T04, T05, T06, T07 / **並列**: T10, T11 と同時進行可能
 
-- [ ] T08-1: **[RED]** `tests/unit/services/task.service.test.ts` 作成（TC-UT-001〜005: 階層3レベル超過エラー・日付バリデーション・D&D期間更新テスト・失敗確認）
-- [ ] T08-2: **[GREEN]** TaskRepository 実装（`lib/repositories/task.repository.ts`）: findByProjectWithActualHours（JOIN集計）・CRUD・findChildren
-- [ ] T08-3: **[GREEN]** TaskService 実装（`lib/services/task.service.ts`）: 階層3レベル制限チェック・日付バリデーション・CRUD（T08-1テストをパス）
-- [ ] T08-4: タスク一覧 API（`GET /api/projects/[id]/tasks`）: 実績工数付き全タスク取得（ページネーションなし）
-- [ ] T08-5: タスク登録 API（`POST /api/projects/[id]/tasks`）: 階層制限・バリデーション
-- [ ] T08-6: タスク更新 API（`PUT /api/projects/[id]/tasks/[taskId]`）: ガントチャートD&D対応
-- [ ] T08-7: タスク削除 API（`DELETE /api/projects/[id]/tasks/[taskId]`）: 日報明細紐付きチェック
-- [ ] T08-8: **[RED]** `tests/unit/components/features/task-slide-over.test.tsx` 作成（フォーム入力・バリデーション・登録/編集切替テスト・失敗確認）
-- [ ] T08-9: **[GREEN]** `components/features/task-slide-over.tsx` (TaskSlideOver): タスク登録/編集フォーム（T08-8テストをパス）
-- [ ] T08-10: **[RED]** `tests/unit/components/features/wbs-tree-table.test.tsx` 作成（階層ツリー表示・折りたたみ・予実工数表示テスト・失敗確認）
-- [ ] T08-11: **[GREEN]** `components/features/wbs-tree-table.tsx` (WbsTreeTable): 階層ツリーテーブル・折りたたみ・予実工数表示（T08-10テストをパス）
-- [ ] T08-12: `components/features/gantt-chart.tsx` (GanttChart): 日/週/月切替・D&Dによる期間変更・楽観的更新
-- [ ] T08-13: WBS 画面（`app/(main)/projects/[id]/wbs/page.tsx`）: WBSビュー/ガントチャート切替
+- [x] T08-1: **[RED]** `tests/unit/services/task.service.test.ts` 作成（TC-UT-001〜005: 階層3レベル超過エラー・日付バリデーション・D&D期間更新テスト・失敗確認）
+- [x] T08-2: **[GREEN]** TaskRepository 実装（`lib/repositories/task.repository.ts`）: findByProjectWithActualHours（JOIN集計）・CRUD・findChildren
+- [x] T08-3: **[GREEN]** TaskService 実装（`lib/services/task.service.ts`）: 階層3レベル制限チェック・日付バリデーション・CRUD（T08-1テストをパス）
+- [x] T08-4: タスク一覧 API（`GET /api/projects/[id]/tasks`）: 実績工数付き全タスク取得（ページネーションなし）
+- [x] T08-5: タスク登録 API（`POST /api/projects/[id]/tasks`）: 階層制限・バリデーション
+- [x] T08-6: タスク更新 API（`PUT /api/projects/[id]/tasks/[taskId]`）: ガントチャートD&D対応
+- [x] T08-7: タスク削除 API（`DELETE /api/projects/[id]/tasks/[taskId]`）: 日報明細紐付きチェック
+- [x] T08-8: **[RED]** `tests/unit/components/features/task-slide-over.test.tsx` 作成（フォーム入力・バリデーション・登録/編集切替テスト・失敗確認）
+- [x] T08-9: **[GREEN]** `components/features/task-slide-over.tsx` (TaskSlideOver): タスク登録/編集フォーム（T08-8テストをパス）
+- [x] T08-10: **[RED]** `tests/unit/components/features/wbs-tree-table.test.tsx` 作成（階層ツリー表示・折りたたみ・予実工数表示テスト・失敗確認）
+- [x] T08-11: **[GREEN]** `components/features/wbs-tree-table.tsx` (WbsTreeTable): 階層ツリーテーブル・折りたたみ・予実工数表示（T08-10テストをパス）
+- [x] T08-12: `components/features/gantt-chart.tsx` (GanttChart): 日/週/月切替・D&Dによる期間変更・楽観的更新
+- [x] T08-13: WBS 画面（`app/(main)/projects/[id]/wbs/page.tsx`）: WBSビュー/ガントチャート切替
 
 ---
 
