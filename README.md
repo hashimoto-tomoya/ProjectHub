@@ -43,22 +43,41 @@ cd project-hub
 
 # 2. 環境変数の設定
 cp .env.example .env.local
-# .env.local を編集して DATABASE_URL, NEXTAUTH_SECRET 等を設定
+# NEXTAUTH_SECRET を任意の文字列に変更する（DATABASE_URL はデフォルト値のまま動作）
 
-# 3. 依存パッケージのインストール
+# 3. DBサーバー起動（Docker）
+docker compose up db -d
+
+# 4. 依存パッケージのインストール
 npm install
 
-# 4. DBマイグレーション & シードデータ投入
+# 5. DBマイグレーション & シードデータ投入
 npx prisma migrate dev
 npx prisma db seed
 
-# 5. 開発サーバー起動
+# 6. 開発サーバー起動
 npm run dev
 ```
 
 ブラウザで [http://localhost:3000](http://localhost:3000) にアクセスします。
 
-### Dockerで起動する場合
+#### DB接続情報（デフォルト値）
+
+| 項目 | 値 |
+|------|---|
+| ホスト | `localhost:5432` |
+| DB名 | `projecthub` |
+| ユーザー | `postgres` |
+| パスワード | `password` |
+
+#### DBの停止
+
+```bash
+docker compose down        # 停止（データは保持）
+docker compose down -v     # 停止 + データも削除
+```
+
+### アプリ全体をDockerで起動する場合
 
 ```bash
 docker compose up -d
